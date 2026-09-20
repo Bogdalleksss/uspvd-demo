@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex">
@@ -9,7 +9,8 @@
 <link rel="icon" href="./logos/app-icon.png">
 <link rel="manifest" href="./manifest.webmanifest">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F3F6F9">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -32,10 +33,50 @@
     /* TabBar: тонкая линия сверху вместо тени, подпись 13px (иконки уже 24px из --size-icon) */
     .uv-tabbar { box-shadow: none; border-top: 1px solid var(--divider); }
     .uv-tab { font-size: 13px; }
+
+    /* Адаптивная оболочка: на телефоне занимает весь экран, на широких экранах — колонка по центру */
+    html, body { margin: 0; height: 100%; background: var(--bg); }
+    body { overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
+    .app-shell {
+      width: 100%; max-width: 480px; margin: 0 auto;
+      height: 100vh; height: 100dvh;
+      display: flex; flex-direction: column;
+      background: var(--bg); overflow: hidden; font-family: var(--font-sans);
+    }
+    .app-screen { flex: 1; min-height: 0; overflow: hidden; }
+    .app-screen > .sc-host { height: 100%; }
+    .app-tabbar { flex: none; background: var(--surface); padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+    /* Компоненты DS ограничены 390px — растягиваем на ширину экрана */
+    .uv-tabbar, .uv-topbar, .uv-scrim, .uv-screen { max-width: none !important; }
+    .uv-illustration { max-width: 100%; }
+    .uv-tab { min-width: 0; }
+    /* Длинные подписи текстовых кнопок переносим, а не вылезаем за экран */
+    .app-shell .uv-btn--text-small { white-space: normal; text-align: center; max-width: 100%; }
+    .app-shell img, .app-shell svg { max-width: 100%; }
+    /* Длинные слова не должны раздвигать экран */
+    .app-shell h1, .app-shell h2, .app-shell h3, .app-shell p, .app-shell span { overflow-wrap: break-word; hyphens: auto; }
+    @media (max-width: 359px) {
+      .app-shell h1 { font-size: calc(24px * var(--uv-text-scale, 1)) !important; }
+    }
+    @media (min-width: 560px) {
+      html { background: #e4eaf0; }
+      .app-shell {
+        height: min(100dvh, 900px); margin-top: max(0px, calc((100dvh - 900px) / 2));
+        box-shadow: 0 8px 32px rgba(0, 0, 0, .14);
+      }
+    }
+    /* Низкие экраны (iPhone SE, альбомная ориентация): компактнее иллюстрации и таббар */
+    @media (max-height: 700px) {
+      .uv-illustration { width: auto; height: 140px; }
+      .uv-illustration svg { height: 100%; width: auto; }
+    }
+    @media (max-height: 640px) {
+      .app-tabbar { padding-bottom: max(4px, env(safe-area-inset-bottom)); }
+    }
   </style>
 </helmet>
-<div class="uv" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;font-family:var(--font-sans)">
-  <div style="flex:1;min-height:0;overflow:hidden;--uv-text-scale:{{ textScale }}">
+<div class="uv app-shell">
+  <div class="app-screen" style="--uv-text-scale:{{ textScale }}">
     <sc-if value="{{ isS01 }}" hint-placeholder-val="{{ true }}"><dc-import name="S01Welcome" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
     <sc-if value="{{ isS02 }}"><dc-import name="S02Phone" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
     <sc-if value="{{ isS03 }}"><dc-import name="S03Code" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
@@ -53,7 +94,7 @@
     <sc-if value="{{ isS16 }}"><dc-import name="S16Privacy" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
   </div>
   <sc-if value="{{ showTabBar }}">
-    <div style="flex:none;background:var(--surface);padding-bottom:16px">
+    <div class="app-tabbar">
       <x-import component-from-global-scope="Ds_722904.TabBar" active="{{ tabKey }}" on-change="{{ onTabChange }}" hint-size="390px,64px"></x-import>
     </div>
   </sc-if>

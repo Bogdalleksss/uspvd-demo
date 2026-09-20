@@ -20,11 +20,11 @@
   <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
   <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
 </helmet>
-<div class="uv" style="width:390px;height:844px;overflow-y:auto;background:var(--bg);display:flex;flex-direction:column;font-size:calc(17px * var(--uv-text-scale, 1))">
+<div class="uv" style="width:100%;height:100%;overflow-y:auto;background:var(--bg);display:flex;flex-direction:column;font-size:calc(17px * var(--uv-text-scale, 1))">
   <div ref="{{ setLogoWrap }}" style="flex:none;display:flex;justify-content:center;padding:24px 20px 0">
     <x-import component-from-global-scope="Ds_722904.Logo" hint-size="auto,32px"></x-import>
   </div>
-  <div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:20px;padding:150px 32px 0;text-align:center">
+  <div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:20px;padding:clamp(12px,calc(100vh - 694px),150px) 32px 0;text-align:center">
     <sc-if value="{{ isSlide1 }}">
       <div class="uv-illustration">
         <svg width="220" height="173" viewBox="0 0 280 220" fill="none" xmlns="http://www.w3.org/2000/svg">

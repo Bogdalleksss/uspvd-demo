@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex">
@@ -21,13 +21,100 @@
   <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
   <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
   <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <style>
+    html, body { margin: 0; background: var(--bg); }
+    body { -webkit-text-size-adjust: 100%; }
+    .adm-root { width: 100%; min-height: 100vh; background: var(--bg); font-size: 15px; overflow-x: hidden; }
+    .adm-root h1, .adm-root h3, .adm-root p, .adm-root span { overflow-wrap: break-word; }
+
+    /* Вход */
+    .adm-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px; box-sizing: border-box; }
+    .adm-login-card { width: 100%; max-width: 400px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: stretch; }
+
+    /* Страница */
+    .adm-page { max-width: 1200px; margin: 0 auto; padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; }
+    .adm-header { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; }
+    .adm-header-title { font-size: 17px; color: var(--text-secondary); }
+    .adm-header-spacer { flex: 1; min-width: 12px; }
+    .adm-tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--divider); overflow-x: auto; }
+    .adm-tabs button { white-space: nowrap; flex: none; }
+
+    /* Сводка */
+    .adm-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .adm-overview { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+    .adm-overview.has-side { grid-template-columns: minmax(0, 1fr) 380px; }
+    .adm-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .adm-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+    /* Сотрудники */
+    .adm-search { position: relative; width: 320px; max-width: 100%; }
+    .adm-team-grid { display: grid; grid-template-columns: minmax(170px, 2.2fr) minmax(190px, 1.8fr) minmax(180px, 1fr) minmax(90px, .9fr) auto; column-gap: 12px; }
+    .adm-team-row { display: contents; }
+    .adm-team-row > div { min-height: 56px; box-sizing: border-box; word-break: break-word; }
+    .adm-role-select { position: relative; width: 100%; max-width: 180px; }
+
+    /* Модальные окна и панель абонента */
+    .adm-modal-wrap { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box; background: var(--scrim); z-index: 50; }
+    .adm-modal { width: 100%; max-width: 480px; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto; box-sizing: border-box; }
+    .adm-modal--sm { max-width: 440px; }
+    .adm-modal-actions { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+    .adm-drawer-wrap { position: fixed; inset: 0; display: flex; justify-content: flex-end; background: var(--scrim); z-index: 60; }
+    .adm-drawer { width: 100%; max-width: 520px; height: 100%; box-sizing: border-box; background: var(--surface); overflow-y: auto; box-shadow: var(--shadow-sheet); display: flex; flex-direction: column; gap: 20px; padding: 28px 28px 32px; }
+
+    /* Планшет и узкий десктоп: таблица сотрудников превращается в карточки */
+    @media (max-width: 1199px) {
+      .adm-team-grid { display: block; }
+      .adm-team-head { display: none; }
+      .adm-team-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--divider); }
+      .adm-team-row > div { min-height: 0; border-top: none !important; padding: 0 8px !important; background: transparent !important; }
+      .adm-team-row > div:nth-child(1) { grid-area: 1 / 1; }
+      .adm-team-row > div:nth-child(4) { grid-area: 1 / 2; justify-self: end; }
+      .adm-team-row > div:nth-child(2) { grid-area: 2 / 1 / 3 / 3; color: var(--text-secondary); }
+      .adm-team-row > div:nth-child(3) { grid-area: 3 / 1; }
+      .adm-team-row > div:nth-child(5) { grid-area: 3 / 2; justify-self: end; }
+      .adm-team-row > div:nth-child(5) span { white-space: normal !important; text-align: right; }
+    }
+
+    @media (max-width: 1199px) {
+      .adm-header-dot { display: none; }
+      .adm-header-title { order: 10; flex-basis: 100%; }
+    }
+
+    /* Планшет и узкий десктоп: публикация уведомления уходит под таблицу */
+    @media (max-width: 1099px) {
+      .adm-overview.has-side { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 899px) {
+      .adm-page { padding: 20px 20px 32px; gap: 16px; }
+      .adm-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    /* Телефон (админка для него не основная, но не должна ломаться) */
+    @media (max-width: 599px) {
+      .adm-page { padding: 16px 12px 28px; }
+      .adm-metrics { gap: 10px; }
+      .adm-metrics .uv-amount { font-size: 22px !important; }
+      .adm-header-brand-sub { display: none; }
+      .adm-drawer { padding: 20px 16px 24px; }
+      .adm-chart.uv-chart { gap: 2px; }
+      .adm-chart .uv-bar:not(:nth-child(3n+1)) .uv-bar__month { visibility: hidden; }
+      .adm-table { min-width: 520px; }
+      .adm-modal-actions > button { flex: 1 1 100%; }
+      .adm-team-row > div:nth-child(1) { grid-area: 1 / 1 / 2 / 3; }
+      .adm-team-row > div:nth-child(2) { grid-area: 2 / 1 / 3 / 3; }
+      .adm-team-row > div:nth-child(3) { grid-area: 3 / 1; }
+      .adm-team-row > div:nth-child(4) { grid-area: 3 / 2; }
+      .adm-team-row > div:nth-child(5) { grid-area: 4 / 1 / 5 / 3; justify-self: start; }
+      .adm-team-row > div:nth-child(5) span { text-align: left; }
+    }
+    @media (max-width: 359px) { .adm-metrics { grid-template-columns: minmax(0, 1fr); } }
+  </style>
   <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
 </helmet>
-<div class="uv" style="width:1440px;min-height:900px;overflow-y:auto;background:var(--bg);font-size:15px">
+<div class="uv adm-root">
 
 <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
-  <div style="min-height:900px;display:flex;align-items:center;justify-content:center;padding:40px">
-    <div class="uv-card" style="width:400px;display:flex;flex-direction:column;gap:16px;align-items:stretch">
+  <div class="adm-login">
+    <div class="uv-card adm-login-card">
       <div style="display:flex;justify-content:center;align-items:center;gap:12px;padding-bottom:4px">
         <img src="logos/uv-mark.png" alt="" style="height:40px;display:block;flex-shrink:0">
         <div style="display:flex;flex-direction:column;line-height:1.25">
@@ -58,17 +145,17 @@
 </sc-if>
 
 <sc-if value="{{ !isLogin }}" hint-placeholder-val="{{ false }}">
-  <div style="max-width:1200px;margin:0 auto;padding:28px 32px 40px;display:flex;flex-direction:column;gap:20px">
+  <div class="adm-page">
 
-    <div style="display:flex;align-items:center;gap:12px;white-space:nowrap">
+    <div class="adm-header">
       <img src="logos/uv-mark.png" alt="" style="height:32px;display:block;flex-shrink:0">
       <div style="display:flex;flex-direction:column;line-height:1.25;flex-shrink:0">
         <span style="font-size:17px;font-weight:700;color:var(--primary)">Успенский Водоканал</span>
-        <span style="font-size:13px;color:var(--text-secondary)">муниципальное унитарное предприятие</span>
+        <span class="adm-header-brand-sub" style="font-size:13px;color:var(--text-secondary)">муниципальное унитарное предприятие</span>
       </div>
-      <span style="font-size:17px;color:var(--text-secondary);margin-left:8px">·</span>
-      <span style="font-size:17px;color:var(--text-secondary)">Панель водоканала · сентябрь 2026</span>
-      <div style="flex:1;min-width:24px"></div>
+      <span class="adm-header-dot" style="font-size:17px;color:var(--text-secondary);margin-left:8px">·</span>
+      <span class="adm-header-title">Панель водоканала · сентябрь 2026</span>
+      <div class="adm-header-spacer"></div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;line-height:1.3;flex-shrink:0">
         <span style="font-size:15px;font-weight:600;color:var(--text-primary)">{{ meName }}</span>
         <span style="font-size:13px;color:var(--text-secondary)">{{ meRoleLabel }}</span>
@@ -80,7 +167,7 @@
       <span style="font-size:13px;color:var(--text-secondary);background:var(--warning-soft);padding:6px 12px;border-radius:6px;display:inline-block">Демо-данные</span>
     </div>
 
-    <div style="display:flex;gap:24px;border-bottom:1px solid var(--divider)">
+    <div class="adm-tabs">
       <button style="border:none;background:none;padding:10px 2px;font-size:15px;font-weight:600;cursor:pointer;color:{{ overviewTabColor }};border-bottom:2px solid {{ overviewTabBorder }}" onClick="{{ goOverview }}">Сводка</button>
       <sc-if value="{{ canTeam }}">
         <button style="border:none;background:none;padding:10px 2px;font-size:15px;font-weight:600;cursor:pointer;color:{{ teamTabColor }};border-bottom:2px solid {{ teamTabBorder }}" onClick="{{ goTeam }}">Сотрудники</button>
@@ -96,7 +183,7 @@
     </sc-if>
 
     <sc-if value="{{ isOverview }}">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <div class="adm-metrics">
         <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
           <div class="uv-card">
             <span class="uv-card__meta">{{ m.label }}</span>
@@ -105,11 +192,11 @@
         </sc-for>
       </div>
 
-      <div style="display:grid;grid-template-columns:{{ overviewCols }};gap:16px;align-items:start">
+      <div class="adm-overview {{ overviewClass }}">
         <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
           <div class="uv-card">
             <h3 class="uv-card__title">Показания по дням, 1–21 сентября</h3>
-            <div class="uv-chart" style="height:140px">
+            <div class="uv-chart adm-chart" style="height:140px">
               <sc-for list="{{ dayBars }}" as="d" hint-placeholder-count="21">
                 <div class="uv-bar">
                   <div class="uv-bar__col" style="height:{{ d.height }}"></div>
@@ -121,7 +208,7 @@
 
           <div class="uv-card">
             <h3 class="uv-card__title">Последние показания</h3>
-            <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <div class="adm-scroll"><table class="adm-table">
               <thead>
                 <tr style="text-align:left;color:var(--text-secondary)">
                   <th style="padding:8px 8px;font-weight:400">Время</th>
@@ -145,12 +232,12 @@
                   </tr>
                 </sc-for>
               </tbody>
-            </table>
+            </table></div>
           </div>
         </div>
 
         <sc-if value="{{ canPublish }}">
-          <div class="uv-card" style="width:380px;min-width:380px">
+          <div class="uv-card">
             <h3 class="uv-card__title">Опубликовать уведомление</h3>
             <div style="display:flex;flex-direction:column;gap:4px">
               <label for="s14-type" class="uv-field__label">Тип</label>
@@ -181,7 +268,7 @@
       <div class="uv-card">
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:16px">
           <h3 class="uv-card__title" style="margin:0">Сотрудники</h3>
-          <div style="position:relative;width:320px">
+          <div class="adm-search">
             <span aria-hidden="true" class="uv-icon" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--text-secondary);pointer-events:none">search</span>
             <input class="uv-field__input" style="height:44px;width:100%;padding:0 40px 0 40px;font-size:15px" placeholder="Поиск по имени или почте" value="{{ teamSearch }}" onChange="{{ onTeamSearch }}">
             <sc-if value="{{ teamSearch }}">
@@ -200,25 +287,25 @@
         </sc-if>
 
         <sc-if value="{{ !noStaffResults }}">
-          <div style="display:grid;grid-template-columns:2.2fr 1.8fr 1fr 0.9fr auto;column-gap:12px">
-            <div style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Имя</div>
-            <div style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Почта</div>
-            <div style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Роль</div>
-            <div style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Статус</div>
-            <div style="padding:0 8px 10px"></div>
+          <div class="adm-scroll"><div class="adm-team-grid">
+            <div class="adm-team-head" style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Имя</div>
+            <div class="adm-team-head" style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Почта</div>
+            <div class="adm-team-head" style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Роль</div>
+            <div class="adm-team-head" style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Статус</div>
+            <div class="adm-team-head" style="padding:0 8px 10px"></div>
 
             <sc-for list="{{ staffRows }}" as="s" hint-placeholder-count="4">
-              <div style="display:contents">
-                <div style="height:56px;display:flex;flex-direction:column;justify-content:center;gap:2px;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
+              <div class="adm-team-row">
+                <div style="display:flex;flex-direction:column;justify-content:center;gap:2px;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
                   <span style="font-size:17px;font-weight:600;color:var(--text-primary)">{{ s.nameDisplay }}</span>
                   <sc-if value="{{ s.nameHint }}"><span style="font-size:13px;color:var(--text-secondary)">{{ s.nameHint }}</span></sc-if>
                 </div>
-                <div style="height:56px;display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">{{ s.email }}</div>
-                <div style="height:56px;display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
+                <div style="display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">{{ s.email }}</div>
+                <div style="display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
                   <sc-if value="{{ s.isSelf }}"><span style="color:var(--text-secondary);cursor:not-allowed">{{ s.roleLabel }}</span></sc-if>
                   <sc-if value="{{ !s.isSelf }}">
-                    <div style="position:relative;width:180px">
-                      <select style="{{ selectStyle }}width:180px;" style-focus="{{ selectFocusStyle }}" value="{{ s.role }}" onChange="{{ s.onRoleChange }}">
+                    <div class="adm-role-select">
+                      <select style="{{ selectStyle }}" style-focus="{{ selectFocusStyle }}" value="{{ s.role }}" onChange="{{ s.onRoleChange }}">
                         <option value="dispatcher">Диспетчер</option>
                         <option value="accountant">Бухгалтер</option>
                       </select>
@@ -226,17 +313,17 @@
                     </div>
                   </sc-if>
                 </div>
-                <div style="height:56px;display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
+                <div style="display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
                   <span style="font-size:13px;padding:4px 10px;border-radius:6px;background:{{ s.statusBg }};color:{{ s.statusColor }};white-space:nowrap">{{ s.statusLabel }}</span>
                 </div>
-                <div style="height:56px;display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
+                <div style="display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
                   <sc-if value="{{ s.isSelf }}"><span style="font-size:13px;color:var(--text-secondary);white-space:nowrap">Нельзя изменить свои права</span></sc-if>
                   <sc-if value="{{ s.showDisable }}"><button class="uv-btn uv-btn--text-small" style="color:var(--error)" onClick="{{ s.onDisableClick }}">Отключить доступ</button></sc-if>
                   <sc-if value="{{ s.showEnable }}"><button class="uv-btn uv-btn--text-small" style="color:var(--primary)" onClick="{{ s.onEnableClick }}">Включить доступ</button></sc-if>
                 </div>
               </div>
             </sc-for>
-          </div>
+          </div></div>
         </sc-if>
         <p style="font-size:13px;color:var(--text-secondary);margin:16px 0 0">Демо. В рабочей системе права проверяются на сервере, действия пишутся в журнал.</p>
       </div>
@@ -245,8 +332,8 @@
 </sc-if>
 
 <sc-if value="{{ inviteOpen }}">
-  <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--scrim);z-index:50" onClick="{{ onScrimClick }}">
-    <div class="uv-card" style="width:480px;border-radius:var(--radius-lg);display:flex;flex-direction:column;gap:14px" onClick="{{ stopClick }}">
+  <div class="adm-modal-wrap" onClick="{{ onScrimClick }}">
+    <div class="uv-card adm-modal" style="border-radius:var(--radius-lg);display:flex;flex-direction:column;gap:14px" onClick="{{ stopClick }}">
       <div style="display:flex;align-items:center;justify-content:space-between">
         <h3 class="uv-card__title" style="margin:0">Пригласить сотрудника</h3>
         <button aria-label="Закрыть" onClick="{{ closeInvite }}" style="border:none;background:none;cursor:pointer;display:flex"><span aria-hidden="true" class="uv-icon" style="font-size:22px">close</span></button>
@@ -264,7 +351,7 @@
         </div>
         <span style="font-size:13px;color:var(--text-secondary)">{{ inviteRoleHint }}</span>
       </div>
-      <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:4px">
+      <div class="adm-modal-actions" style="margin-top:4px">
         <button class="uv-btn uv-btn--secondary" style="width:auto;height:48px;padding:0 20px;white-space:nowrap" onClick="{{ closeInvite }}">Отмена</button>
         <button class="uv-btn uv-btn--primary" style="width:auto;height:48px;padding:0 20px;white-space:nowrap" disabled="{{ inviteSendDisabled }}" onClick="{{ sendInvite }}">Отправить приглашение</button>
       </div>
@@ -273,12 +360,12 @@
 </sc-if>
 
 <sc-if value="{{ dialogOpen }}">
-  <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--scrim);z-index:50" onClick="{{ closeDialog }}">
-    <div class="uv-card" style="width:440px;border-radius:var(--radius-lg);padding:24px;display:flex;flex-direction:column;gap:16px;position:relative" onClick="{{ stopClick }}">
+  <div class="adm-modal-wrap" onClick="{{ closeDialog }}">
+    <div class="uv-card adm-modal adm-modal--sm" style="border-radius:var(--radius-lg);padding:24px;display:flex;flex-direction:column;gap:16px;position:relative" onClick="{{ stopClick }}">
       <button aria-label="Закрыть" onClick="{{ closeDialog }}" style="position:absolute;top:16px;right:16px;border:none;background:none;cursor:pointer;display:flex"><span aria-hidden="true" class="uv-icon" style="font-size:20px">close</span></button>
       <h3 style="font-size:22px;font-weight:600;color:var(--text-primary);margin:0;padding-right:24px">Отключить доступ?</h3>
       <p style="font-size:17px;color:var(--text-primary);margin:0">{{ dialogText }}</p>
-      <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:4px">
+      <div class="adm-modal-actions" style="margin-top:4px">
         <button class="uv-btn uv-btn--secondary" style="width:auto;height:44px;padding:0 20px;white-space:nowrap" onClick="{{ closeDialog }}">Отмена</button>
         <button style="width:auto;height:44px;padding:0 20px;white-space:nowrap;background:var(--error);color:#fff;border:none;border-radius:var(--radius-md);font:inherit;font-weight:600;cursor:pointer" onClick="{{ confirmDisable }}">Отключить</button>
       </div>
@@ -287,8 +374,8 @@
 </sc-if>
 
 <sc-if value="{{ drawerOpen }}">
-  <div style="position:fixed;inset:0;display:flex;justify-content:flex-end;background:var(--scrim);z-index:60" onClick="{{ closeDrawer }}">
-    <div style="width:520px;height:100%;background:var(--surface);overflow-y:auto;box-shadow:var(--shadow-sheet);display:flex;flex-direction:column;gap:20px;padding:28px 28px 32px" onClick="{{ stopClick }}">
+  <div class="adm-drawer-wrap" onClick="{{ closeDrawer }}">
+    <div class="adm-drawer" onClick="{{ stopClick }}">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
         <div style="display:flex;align-items:center;gap:14px">
           <div style="width:48px;height:48px;border-radius:var(--radius-full);background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex-shrink:0">{{ sub.initials }}</div>
@@ -326,7 +413,7 @@
 
       <div class="uv-card" style="padding:16px">
         <h3 class="uv-card__title">Показания</h3>
-        <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <div class="adm-scroll"><table class="adm-table" style="min-width:0">
           <thead>
             <tr style="text-align:left;color:var(--text-secondary)">
               <th style="padding:6px 6px;font-weight:400">Месяц</th>
@@ -350,7 +437,7 @@
               </tr>
             </sc-for>
           </tbody>
-        </table>
+        </table></div>
       </div>
 
       <sc-if value="{{ sub.showBilling }}">
@@ -554,7 +641,7 @@ class Component extends DCLogic {
       closeBanner: () => this.setState({ banner: null }),
 
       metrics,
-      overviewCols: canPublish ? '1fr 380px' : '1fr',
+      overviewClass: canPublish ? 'has-side' : '',
       dayBars: DAY_VALUES.map((v, i) => ({ day: String(i + 1), height: Math.max((v / max) * 100, 6) + '%' })),
       rows: ROWS.map((r, i) => ({ time: r.time, account: r.account, street: r.street, meter: r.meter, ok: r.ok, warn: !r.ok, onOpen: () => this.setState({ selectedSubId: SUBSCRIBERS[i].id, searchOpen: false }) })),
 
