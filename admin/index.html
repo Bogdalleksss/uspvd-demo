@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<link rel="icon" href="./logos/app-icon.png">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S14 · Панель водоканала</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:1440px;min-height:900px;overflow-y:auto;background:var(--bg);font-size:15px">
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height:900px;display:flex;align-items:center;justify-content:center;padding:40px">
+    <div class="uv-card" style="width:400px;display:flex;flex-direction:column;gap:16px;align-items:stretch">
+      <div style="display:flex;justify-content:center;align-items:center;gap:12px;padding-bottom:4px">
+        <img src="logos/uv-mark.png" alt="" style="height:40px;display:block;flex-shrink:0">
+        <div style="display:flex;flex-direction:column;line-height:1.25">
+          <span style="font-size:17px;font-weight:700;color:var(--primary)">Успенский Водоканал</span>
+          <span style="font-size:13px;color:var(--text-secondary)">муниципальное унитарное предприятие</span>
+        </div>
+      </div>
+      <h1 style="font-size:22px;font-weight:700;color:var(--text-primary);text-align:center;margin:0">Панель водоканала</h1>
+      <x-import component-from-global-scope="Ds_722904.TextField" label="Рабочая почта" value="{{ email }}" placeholder="you@uspvodokanal.ru" on-change="{{ onEmail }}" hint-size="100%,72px"></x-import>
+      <x-import component-from-global-scope="Ds_722904.TextField" label="Пароль" type="password" value="{{ password }}" placeholder="Пароль" on-change="{{ onPassword }}" hint-size="100%,72px"></x-import>
+      <sc-if value="{{ loginError }}">
+        <span style="display:inline-flex;align-items:center;gap:6px;color:var(--error);font-size:14px"><span aria-hidden="true" class="uv-icon uv-icon--fill" style="font-size:18px">error</span>{{ loginError }}</span>
+      </sc-if>
+      <x-import component-from-global-scope="Ds_722904.Button" state="{{ loginBtnState }}" on-click="{{ submitLogin }}" hint-size="100%,48px">Войти</x-import>
+      <button class="uv-btn uv-btn--text-small" style="align-self:center" onClick="{{ forgotPassword }}">Забыли пароль?</button>
+      <sc-if value="{{ loginBanner }}">
+        <x-import component-from-global-scope="Ds_722904.StatusBanner" tone="info" title="{{ loginBanner }}" hint-size="100%,auto"></x-import>
+      </sc-if>
+      <div style="margin-top:8px;padding:12px;background:var(--bg);border-radius:var(--radius-md);font-size:13px;color:var(--text-secondary);display:flex;flex-direction:column;gap:4px">
+        <span style="font-weight:600;color:var(--text-primary)">Демо-режим</span>
+        <span>director@uspvodokanal.ru — владелец</span>
+        <span>dispatcher@uspvodokanal.ru — диспетчер</span>
+        <span>buh@uspvodokanal.ru — бухгалтер</span>
+        <span>Пароль — любой</span>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ !isLogin }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width:1200px;margin:0 auto;padding:28px 32px 40px;display:flex;flex-direction:column;gap:20px">
+
+    <div style="display:flex;align-items:center;gap:12px;white-space:nowrap">
+      <img src="logos/uv-mark.png" alt="" style="height:32px;display:block;flex-shrink:0">
+      <div style="display:flex;flex-direction:column;line-height:1.25;flex-shrink:0">
+        <span style="font-size:17px;font-weight:700;color:var(--primary)">Успенский Водоканал</span>
+        <span style="font-size:13px;color:var(--text-secondary)">муниципальное унитарное предприятие</span>
+      </div>
+      <span style="font-size:17px;color:var(--text-secondary);margin-left:8px">·</span>
+      <span style="font-size:17px;color:var(--text-secondary)">Панель водоканала · сентябрь 2026</span>
+      <div style="flex:1;min-width:24px"></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;line-height:1.3;flex-shrink:0">
+        <span style="font-size:15px;font-weight:600;color:var(--text-primary)">{{ meName }}</span>
+        <span style="font-size:13px;color:var(--text-secondary)">{{ meRoleLabel }}</span>
+      </div>
+      <button class="uv-btn uv-btn--secondary" style="width:auto;flex-shrink:0;height:40px;padding:0 16px;display:inline-flex;align-items:center;gap:6px" onClick="{{ logout }}"><span aria-hidden="true" class="uv-icon" style="font-size:20px">logout</span>Выйти</button>
+    </div>
+
+    <div style="align-self:flex-start">
+      <span style="font-size:13px;color:var(--text-secondary);background:var(--warning-soft);padding:6px 12px;border-radius:6px;display:inline-block">Демо-данные</span>
+    </div>
+
+    <div style="display:flex;gap:24px;border-bottom:1px solid var(--divider)">
+      <button style="border:none;background:none;padding:10px 2px;font-size:15px;font-weight:600;cursor:pointer;color:{{ overviewTabColor }};border-bottom:2px solid {{ overviewTabBorder }}" onClick="{{ goOverview }}">Сводка</button>
+      <sc-if value="{{ canTeam }}">
+        <button style="border:none;background:none;padding:10px 2px;font-size:15px;font-weight:600;cursor:pointer;color:{{ teamTabColor }};border-bottom:2px solid {{ teamTabBorder }}" onClick="{{ goTeam }}">Сотрудники</button>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ banner }}">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;background:{{ banner.bg }};color:{{ banner.color }};font-size:14px">
+        <span aria-hidden="true" class="uv-icon uv-icon--fill" style="font-size:18px">{{ banner.icon }}</span>
+        <span style="flex:1">{{ banner.title }}</span>
+        <button aria-label="Закрыть" onClick="{{ closeBanner }}" style="border:none;background:none;cursor:pointer;color:inherit;display:flex;align-items:center"><span aria-hidden="true" class="uv-icon" style="font-size:18px">close</span></button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isOverview }}">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+          <div class="uv-card">
+            <span class="uv-card__meta">{{ m.label }}</span>
+            <span class="uv-amount" style="font-size:28px">{{ m.value }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:{{ overviewCols }};gap:16px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+          <div class="uv-card">
+            <h3 class="uv-card__title">Показания по дням, 1–21 сентября</h3>
+            <div class="uv-chart" style="height:140px">
+              <sc-for list="{{ dayBars }}" as="d" hint-placeholder-count="21">
+                <div class="uv-bar">
+                  <div class="uv-bar__col" style="height:{{ d.height }}"></div>
+                  <span class="uv-bar__month" style="font-size:11px">{{ d.day }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div class="uv-card">
+            <h3 class="uv-card__title">Последние показания</h3>
+            <table style="width:100%;border-collapse:collapse;font-size:14px">
+              <thead>
+                <tr style="text-align:left;color:var(--text-secondary)">
+                  <th style="padding:8px 8px;font-weight:400">Время</th>
+                  <th style="padding:8px 8px;font-weight:400">Лицевой счёт</th>
+                  <th style="padding:8px 8px;font-weight:400">Улица</th>
+                  <th style="padding:8px 8px;font-weight:400">Счётчик</th>
+                  <th style="padding:8px 8px;font-weight:400">Статус</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+                  <tr style="border-top:1px solid var(--divider)">
+                    <td style="padding:10px 8px">{{ r.time }}</td>
+                    <td style="padding:10px 8px"><button style="border:none;background:none;padding:0;cursor:pointer;color:var(--primary);text-decoration:underline;font-size:14px" onClick="{{ r.onOpen }}">{{ r.account }}</button></td>
+                    <td style="padding:10px 8px">{{ r.street }}</td>
+                    <td style="padding:10px 8px">{{ r.meter }}</td>
+                    <td style="padding:10px 8px">
+                      <sc-if value="{{ r.ok }}"><span style="display:inline-flex;align-items:center;gap:6px;color:var(--success-text)"><span aria-hidden="true" class="uv-icon uv-icon--fill" style="font-size:18px;width:18px;height:18px">check_circle</span>Принято</span></sc-if>
+                      <sc-if value="{{ r.warn }}"><span style="display:inline-flex;align-items:center;gap:6px;color:var(--warning-text)"><span aria-hidden="true" class="uv-icon uv-icon--fill" style="font-size:18px;width:18px;height:18px">warning</span>Проверить — большой расход</span></sc-if>
+                    </td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <sc-if value="{{ canPublish }}">
+          <div class="uv-card" style="width:380px;min-width:380px">
+            <h3 class="uv-card__title">Опубликовать уведомление</h3>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label for="s14-type" class="uv-field__label">Тип</label>
+              <div style="position:relative">
+                <select id="s14-type" style="{{ selectStyle }}" style-focus="{{ selectFocusStyle }}" value="{{ noteType }}" onChange="{{ onTypeChange }}">
+                  <option value="outage">Отключение</option>
+                  <option value="reminder">Напоминание</option>
+                  <option value="info">Информация</option>
+                </select>
+                <span aria-hidden="true" class="uv-icon" style="{{ selectIconStyle }}">expand_more</span>
+              </div>
+            </div>
+            <x-import component-from-global-scope="Ds_722904.TextField" label="Заголовок" value="{{ noteTitle }}" placeholder="Например, плановое отключение воды" on-change="{{ onTitleChange }}" hint-size="100%,80px"></x-import>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label for="s14-text" class="uv-field__label">Текст</label>
+              <textarea id="s14-text" class="uv-field__input" style="height:88px;padding-top:10px;resize:none" placeholder="Подробности для абонентов" value="{{ noteText }}" onChange="{{ onTextChange }}"></textarea>
+            </div>
+            <x-import component-from-global-scope="Ds_722904.Button" on-click="{{ publish }}" hint-size="100%,48px">Опубликовать</x-import>
+            <sc-if value="{{ published }}">
+              <x-import component-from-global-scope="Ds_722904.StatusBanner" tone="success" title="Уведомление отправлено 538 абонентам" hint-size="100%,auto"></x-import>
+            </sc-if>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isTeam }}">
+      <div class="uv-card">
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:16px">
+          <h3 class="uv-card__title" style="margin:0">Сотрудники</h3>
+          <div style="position:relative;width:320px">
+            <span aria-hidden="true" class="uv-icon" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--text-secondary);pointer-events:none">search</span>
+            <input class="uv-field__input" style="height:44px;width:100%;padding:0 40px 0 40px;font-size:15px" placeholder="Поиск по имени или почте" value="{{ teamSearch }}" onChange="{{ onTeamSearch }}">
+            <sc-if value="{{ teamSearch }}">
+              <button aria-label="Очистить поиск" onClick="{{ resetTeamSearch }}" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;display:flex;padding:4px"><span aria-hidden="true" class="uv-icon" style="font-size:18px;color:var(--text-secondary)">close</span></button>
+            </sc-if>
+          </div>
+          <div style="flex:1"></div>
+          <button class="uv-btn uv-btn--primary" style="width:auto;height:44px;padding:0 20px;display:inline-flex;align-items:center;gap:8px;white-space:nowrap" onClick="{{ openInvite }}"><span aria-hidden="true" class="uv-icon" style="font-size:20px">add</span>Пригласить сотрудника</button>
+        </div>
+
+        <sc-if value="{{ noStaffResults }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 8px;border-top:1px solid var(--divider)">
+            <span style="font-size:15px;color:var(--text-secondary)">Никого не нашли</span>
+            <button class="uv-btn uv-btn--text-small" onClick="{{ resetTeamSearch }}">Сбросить поиск</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ !noStaffResults }}">
+          <div style="display:grid;grid-template-columns:2.2fr 1.8fr 1fr 0.9fr auto;column-gap:12px">
+            <div style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Имя</div>
+            <div style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Почта</div>
+            <div style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Роль</div>
+            <div style="padding:0 8px 10px;font-size:13px;color:var(--text-secondary)">Статус</div>
+            <div style="padding:0 8px 10px"></div>
+
+            <sc-for list="{{ staffRows }}" as="s" hint-placeholder-count="4">
+              <div style="display:contents">
+                <div style="height:56px;display:flex;flex-direction:column;justify-content:center;gap:2px;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
+                  <span style="font-size:17px;font-weight:600;color:var(--text-primary)">{{ s.nameDisplay }}</span>
+                  <sc-if value="{{ s.nameHint }}"><span style="font-size:13px;color:var(--text-secondary)">{{ s.nameHint }}</span></sc-if>
+                </div>
+                <div style="height:56px;display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">{{ s.email }}</div>
+                <div style="height:56px;display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
+                  <sc-if value="{{ s.isSelf }}"><span style="color:var(--text-secondary);cursor:not-allowed">{{ s.roleLabel }}</span></sc-if>
+                  <sc-if value="{{ !s.isSelf }}">
+                    <div style="position:relative;width:180px">
+                      <select style="{{ selectStyle }}width:180px;" style-focus="{{ selectFocusStyle }}" value="{{ s.role }}" onChange="{{ s.onRoleChange }}">
+                        <option value="dispatcher">Диспетчер</option>
+                        <option value="accountant">Бухгалтер</option>
+                      </select>
+                      <span aria-hidden="true" class="uv-icon" style="{{ selectIconStyle }}">expand_more</span>
+                    </div>
+                  </sc-if>
+                </div>
+                <div style="height:56px;display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
+                  <span style="font-size:13px;padding:4px 10px;border-radius:6px;background:{{ s.statusBg }};color:{{ s.statusColor }};white-space:nowrap">{{ s.statusLabel }}</span>
+                </div>
+                <div style="height:56px;display:flex;align-items:center;border-top:1px solid var(--divider);padding:0 8px;background:{{ s.rowBg }}">
+                  <sc-if value="{{ s.isSelf }}"><span style="font-size:13px;color:var(--text-secondary);white-space:nowrap">Нельзя изменить свои права</span></sc-if>
+                  <sc-if value="{{ s.showDisable }}"><button class="uv-btn uv-btn--text-small" style="color:var(--error)" onClick="{{ s.onDisableClick }}">Отключить доступ</button></sc-if>
+                  <sc-if value="{{ s.showEnable }}"><button class="uv-btn uv-btn--text-small" style="color:var(--primary)" onClick="{{ s.onEnableClick }}">Включить доступ</button></sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <p style="font-size:13px;color:var(--text-secondary);margin:16px 0 0">Демо. В рабочей системе права проверяются на сервере, действия пишутся в журнал.</p>
+      </div>
+    </sc-if>
+  </div>
+</sc-if>
+
+<sc-if value="{{ inviteOpen }}">
+  <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--scrim);z-index:50" onClick="{{ onScrimClick }}">
+    <div class="uv-card" style="width:480px;border-radius:var(--radius-lg);display:flex;flex-direction:column;gap:14px" onClick="{{ stopClick }}">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <h3 class="uv-card__title" style="margin:0">Пригласить сотрудника</h3>
+        <button aria-label="Закрыть" onClick="{{ closeInvite }}" style="border:none;background:none;cursor:pointer;display:flex"><span aria-hidden="true" class="uv-icon" style="font-size:22px">close</span></button>
+      </div>
+      <x-import component-from-global-scope="Ds_722904.TextField" label="Имя и фамилия" value="{{ inviteName }}" placeholder="Например, Иван Петров" on-change="{{ onInviteName }}" hint-size="100%,80px"></x-import>
+      <x-import component-from-global-scope="Ds_722904.TextField" label="Рабочая почта" value="{{ inviteEmail }}" placeholder="name@uspvodokanal.ru" error="{{ inviteEmailError }}" on-change="{{ onInviteEmail }}" hint-size="100%,80px"></x-import>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <label for="s14-invite-role" class="uv-field__label">Роль</label>
+        <div style="position:relative">
+          <select id="s14-invite-role" style="{{ selectStyle }}" style-focus="{{ selectFocusStyle }}" value="{{ inviteRole }}" onChange="{{ onInviteRole }}">
+            <option value="dispatcher">Диспетчер</option>
+            <option value="accountant">Бухгалтер</option>
+          </select>
+          <span aria-hidden="true" class="uv-icon" style="{{ selectIconStyle }}">expand_more</span>
+        </div>
+        <span style="font-size:13px;color:var(--text-secondary)">{{ inviteRoleHint }}</span>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:4px">
+        <button class="uv-btn uv-btn--secondary" style="width:auto;height:48px;padding:0 20px;white-space:nowrap" onClick="{{ closeInvite }}">Отмена</button>
+        <button class="uv-btn uv-btn--primary" style="width:auto;height:48px;padding:0 20px;white-space:nowrap" disabled="{{ inviteSendDisabled }}" onClick="{{ sendInvite }}">Отправить приглашение</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ dialogOpen }}">
+  <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--scrim);z-index:50" onClick="{{ closeDialog }}">
+    <div class="uv-card" style="width:440px;border-radius:var(--radius-lg);padding:24px;display:flex;flex-direction:column;gap:16px;position:relative" onClick="{{ stopClick }}">
+      <button aria-label="Закрыть" onClick="{{ closeDialog }}" style="position:absolute;top:16px;right:16px;border:none;background:none;cursor:pointer;display:flex"><span aria-hidden="true" class="uv-icon" style="font-size:20px">close</span></button>
+      <h3 style="font-size:22px;font-weight:600;color:var(--text-primary);margin:0;padding-right:24px">Отключить доступ?</h3>
+      <p style="font-size:17px;color:var(--text-primary);margin:0">{{ dialogText }}</p>
+      <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:4px">
+        <button class="uv-btn uv-btn--secondary" style="width:auto;height:44px;padding:0 20px;white-space:nowrap" onClick="{{ closeDialog }}">Отмена</button>
+        <button style="width:auto;height:44px;padding:0 20px;white-space:nowrap;background:var(--error);color:#fff;border:none;border-radius:var(--radius-md);font:inherit;font-weight:600;cursor:pointer" onClick="{{ confirmDisable }}">Отключить</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ drawerOpen }}">
+  <div style="position:fixed;inset:0;display:flex;justify-content:flex-end;background:var(--scrim);z-index:60" onClick="{{ closeDrawer }}">
+    <div style="width:520px;height:100%;background:var(--surface);overflow-y:auto;box-shadow:var(--shadow-sheet);display:flex;flex-direction:column;gap:20px;padding:28px 28px 32px" onClick="{{ stopClick }}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:48px;height:48px;border-radius:var(--radius-full);background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex-shrink:0">{{ sub.initials }}</div>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:20px;font-weight:700;color:var(--text-primary)">{{ sub.name }}</span>
+            <span style="font-size:14px;color:var(--text-secondary)">Лицевой счёт {{ sub.account }}</span>
+          </div>
+        </div>
+        <button aria-label="Закрыть" onClick="{{ closeDrawer }}" style="border:none;background:none;cursor:pointer;display:flex;flex-shrink:0"><span aria-hidden="true" class="uv-icon" style="font-size:22px">close</span></button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <span style="font-size:15px;color:var(--text-primary)">{{ sub.address }}</span>
+        <a href="{{ sub.phoneTel }}" style="font-size:15px;color:var(--primary)">{{ sub.phoneDisplay }}</a>
+        <span style="font-size:13px;padding:4px 10px;border-radius:6px;background:{{ sub.appBg }};color:{{ sub.appColor }};display:inline-block;width:fit-content">{{ sub.appLabel }}</span>
+      </div>
+
+      <div class="uv-card" style="padding:16px">
+        <h3 class="uv-card__title">Счётчики</h3>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ sub.meters }}" as="mt" hint-placeholder-count="2">
+            <div style="display:flex;justify-content:space-between;border-top:1px solid var(--divider);padding-top:10px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:15px;font-weight:600;color:var(--text-primary)">{{ mt.title }}</span>
+                <span style="font-size:13px;color:var(--text-secondary)">№ {{ mt.serial }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:2px;text-align:right">
+                <span style="font-size:15px;color:var(--text-primary)">{{ mt.prev }} м³</span>
+                <span style="font-size:13px;color:var(--text-secondary)">на {{ mt.prevDate }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="uv-card" style="padding:16px">
+        <h3 class="uv-card__title">Показания</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
+          <thead>
+            <tr style="text-align:left;color:var(--text-secondary)">
+              <th style="padding:6px 6px;font-weight:400">Месяц</th>
+              <th style="padding:6px 6px;font-weight:400">Показание</th>
+              <th style="padding:6px 6px;font-weight:400">Расход</th>
+              <th style="padding:6px 6px;font-weight:400">Канал</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ sub.readings }}" as="rd" hint-placeholder-count="6">
+              <tr style="border-top:1px solid var(--divider);background:{{ rd.rowBg }}">
+                <td style="padding:8px 6px">{{ rd.month }}</td>
+                <td style="padding:8px 6px">{{ rd.valueLabel }}</td>
+                <td style="padding:8px 6px">{{ rd.consumptionLabel }}</td>
+                <td style="padding:8px 6px">
+                  <span>{{ rd.channel }}</span>
+                  <sc-if value="{{ rd.flagLabel }}">
+                    <span style="margin-left:6px;font-size:12px;padding:2px 8px;border-radius:6px;background:var(--warning-soft);color:var(--warning-text);white-space:nowrap">{{ rd.flagLabel }}</span>
+                  </sc-if>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+
+      <sc-if value="{{ sub.showBilling }}">
+        <div class="uv-card" style="padding:16px">
+          <h3 class="uv-card__title">Начисления и платежи</h3>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:8px">
+            <span style="font-size:14px;color:var(--text-secondary)">Текущая задолженность</span>
+            <span style="font-size:20px;font-weight:700;color:{{ sub.debtColor }}">{{ sub.debtLabel }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ sub.payments }}" as="p" hint-placeholder-count="4">
+              <div style="display:flex;justify-content:space-between;border-top:1px solid var(--divider);padding:8px 0;font-size:14px">
+                <span style="color:var(--text-secondary)">{{ p.date }}</span>
+                <span style="color:var(--text-primary)">{{ p.amountLabel }}</span>
+                <span style="color:var(--text-secondary)">{{ p.method }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <p style="font-size:13px;color:var(--text-secondary);margin:0">Данные абонента приходят из биллинга водоканала. Панель их не изменяет. Демо-данные.</p>
+    </div>
+  </div>
+</sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+function money(n) {
+  const p = Number(n).toFixed(2).split('.');
+  return p[0].replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0') + '\u00A0₽';
+}
+
+const ROLE_LABELS = { owner: 'Владелец', dispatcher: 'Диспетчер', accountant: 'Бухгалтер' };
+const ROLE_RIGHTS = {
+  owner: 'Видит и меняет всё: сводку, показания, платежи, публикацию уведомлений и сотрудников.',
+  dispatcher: 'Видит сводку и показания, публикует уведомления. Не видит платежи и сотрудников.',
+  accountant: 'Видит сводку, показания и платежи. Не публикует уведомления и не видит сотрудников.'
+};
+
+const SELECT_STYLE = "appearance:none;-webkit-appearance:none;-moz-appearance:none;width:100%;height:44px;padding:0 40px 0 14px;font-size:15px;font:inherit;color:var(--text-primary);border:1px solid var(--border-input);border-radius:var(--radius-md);background:var(--surface);";
+const SELECT_FOCUS_STYLE = "border:2px solid var(--primary);padding:0 39px 0 13px;";
+const SELECT_ICON_STYLE = "position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:20px;color:var(--text-secondary)";
+
+const STAFF_DEMO = [
+  { id: 'u1', name: 'Сергей Петрович Кравцов', email: 'director@uspvodokanal.ru', role: 'owner', status: 'active' },
+  { id: 'u2', name: 'Марина Игоревна Лозовая', email: 'dispatcher@uspvodokanal.ru', role: 'dispatcher', status: 'active' },
+  { id: 'u3', name: 'Ольга Сергеевна Дьяченко', email: 'buh@uspvodokanal.ru', role: 'accountant', status: 'active' },
+  { id: 'u4', name: 'Андрей Викторович Шульга', email: 'shulga@uspvodokanal.ru', role: 'dispatcher', status: 'invited' }
+];
+
+const ROWS = [
+  { time: '10:42', account: '12-3••67', street: 'ул. Садовая', meter: 'Дом', ok: true },
+  { time: '10:31', account: '12-4••02', street: 'ул. Ленина', meter: 'Полив', ok: true },
+  { time: '10:18', account: '12-3••41', street: 'ул. Садовая', meter: 'Дом', ok: false },
+  { time: '10:05', account: '12-5••19', street: 'ул. Полевая', meter: 'Дом', ok: true },
+  { time: '09:52', account: '12-2••88', street: 'ул. Ленина', meter: 'Полив', ok: true },
+  { time: '09:40', account: '12-4••55', street: 'ул. Садовая', meter: 'Дом', ok: false }
+];
+
+const DAY_VALUES = [14,16,15,18,17,19,16,15,18,20,19,17,16,18,20,19,21,22,24,58,64];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const MONTHS = ['Апрель 2026', 'Май 2026', 'Июнь 2026', 'Июль 2026', 'Август 2026', 'Сентябрь 2026'];
+const CHANNELS = { app: 'Приложение', controller: 'Контролёр', phone: 'Телефон' };
+
+function buildReadings(start, incs, channelKeys, flagIdx, flagKind) {
+  let v = start;
+  return incs.map((inc, i) => {
+    const missing = inc === null;
+    if (!missing) v += inc;
+    return {
+      month: MONTHS[i],
+      valueLabel: missing ? '—' : String(v) + ' м³',
+      consumptionLabel: missing ? '—' : inc + ' м³',
+      channel: missing ? '—' : CHANNELS[channelKeys[i]],
+      flagLabel: i === flagIdx ? (flagKind === 'missing' ? 'Не передано' : 'Проверить — большой расход') : (missing ? 'Не передано' : null),
+      rowBg: (i === flagIdx || missing) ? 'var(--warning-soft)' : 'transparent'
+    };
+  });
+}
+
+function initials(name) {
+  const parts = name.split(' ');
+  return (parts[0]?.[0] || '') + (parts[1]?.[0] || '');
+}
+
+const SUBSCRIBERS = [
+  { id: 's1', name: 'Иванова Анна Петровна', account: '12-30001', street: 'ул. Садовая, д. 5', phone: '+7 (918) 100-30-01', hasApp: true, debt: 0,
+    meters: [{ title: 'Счётчик воды', serial: '2001155', prev: 214, prevDate: '24.08.2026' }],
+    readings: buildReadings(196, [4, 5, 3, 4, 4, 4], ['app','app','app','app','app','app'], null, null),
+    payments: [{ date: '24.08.2026', amount: 780.40, method: 'СБП' }, { date: '23.07.2026', amount: 690.10, method: 'Карта' }] },
+  { id: 's2', name: 'Кузнецов Виктор Дмитриевич', account: '12-30002', street: 'ул. Садовая, д. 9', phone: '+7 (918) 100-30-02', hasApp: true, debt: 1240.50,
+    meters: [{ title: 'Дом', serial: '2001200', prev: 342, prevDate: '24.08.2026' }, { title: 'Полив', serial: '2001201', prev: 511, prevDate: '24.08.2026' }],
+    readings: buildReadings(300, [10, 11, 9, 12, 10, 11], ['app','controller','app','app','phone','app'], null, null),
+    payments: [{ date: '10.07.2026', amount: 1050.00, method: 'Карта' }, { date: '12.06.2026', amount: 980.00, method: 'СБП' }] },
+  { id: 's3', name: 'Морозова Валентина Ивановна', account: '12-30003', street: 'ул. Ленина, д. 14', phone: '+7 (918) 100-30-03', hasApp: false, debt: 0,
+    meters: [{ title: 'Счётчик воды', serial: '2001300', prev: 178, prevDate: '24.06.2026' }],
+    readings: buildReadings(160, [6, 5, null, null, null, null], ['controller','controller','phone','phone','phone','phone'], 3, 'missing'),
+    payments: [{ date: '24.05.2026', amount: 540.00, method: 'Касса' }] },
+  { id: 's4', name: 'Ткаченко Сергей Николаевич', account: '12-30004', street: 'ул. Ленина, д. 22', phone: '+7 (918) 100-30-04', hasApp: true, debt: 0,
+    meters: [{ title: 'Дом', serial: '2001400', prev: 260, prevDate: '24.08.2026' }, { title: 'Полив', serial: '2001401', prev: 402, prevDate: '24.08.2026' }],
+    readings: buildReadings(230, [8, 9, 8, 7, 62, 9], ['app','app','app','app','app','app'], 4, 'dispute'),
+    payments: [{ date: '24.08.2026', amount: 610.00, method: 'СБП' }, { date: '24.07.2026', amount: 590.00, method: 'СБП' }] },
+  { id: 's5', name: 'Дьякова Людмила Григорьевна', account: '12-30005', street: 'ул. Полевая, д. 3', phone: '+7 (918) 100-30-05', hasApp: true, debt: 0,
+    meters: [{ title: 'Счётчик воды', serial: '2001500', prev: 121, prevDate: '24.08.2026' }],
+    readings: buildReadings(105, [3, 3, 2, 3, 3, 2], ['app','app','app','app','app','app'], null, null),
+    payments: [{ date: '24.08.2026', amount: 410.00, method: 'СБП' }] },
+  { id: 's6', name: 'Романенко Игорь Олегович', account: '12-30006', street: 'ул. Полевая, д. 11', phone: '+7 (918) 100-30-06', hasApp: false, debt: 860.00,
+    meters: [{ title: 'Дом', serial: '2001600', prev: 288, prevDate: '24.08.2026' }, { title: 'Полив', serial: '2001601', prev: 470, prevDate: '24.08.2026' }],
+    readings: buildReadings(260, [9, 8, 10, 9, 11, 10], ['controller','controller','controller','controller','controller','controller'], null, null),
+    payments: [{ date: '22.06.2026', amount: 700.00, method: 'Касса' }] },
+  { id: 's7', name: 'Белова Наталья Сергеевна', account: '12-30007', street: 'ул. Мира, д. 2', phone: '+7 (918) 100-30-07', hasApp: true, debt: 0,
+    meters: [{ title: 'Счётчик воды', serial: '2001700', prev: 140, prevDate: '24.08.2026' }],
+    readings: buildReadings(126, [3, 4, 3, 2, 3, 3], ['app','app','app','app','app','app'], null, null),
+    payments: [{ date: '24.08.2026', amount: 350.00, method: 'Карта' }] },
+  { id: 's8', name: 'Ковалёв Пётр Андреевич', account: '12-30008', street: 'ул. Мира, д. 17', phone: '+7 (918) 100-30-08', hasApp: true, debt: 0,
+    meters: [{ title: 'Дом', serial: '2001800', prev: 355, prevDate: '24.08.2026' }, { title: 'Полив', serial: '2001801', prev: 520, prevDate: '24.08.2026' }],
+    readings: buildReadings(320, [11, 10, 12, 11, 10, 12], ['app','app','app','phone','app','app'], null, null),
+    payments: [{ date: '24.08.2026', amount: 920.00, method: 'СБП' }, { date: '24.07.2026', amount: 880.00, method: 'СБП' }] }
+];
+
+class Component extends DCLogic {
+  state = {
+    view: 'login', meId: null, email: '', password: '', loginError: '', loginBanner: '',
+    staff: STAFF_DEMO.map(s => ({ ...s })),
+    banner: null, dialogRowId: null,
+    inviteOpen: false, inviteName: '', inviteEmail: '', inviteRole: 'dispatcher', inviteEmailError: '',
+    highlightId: null,
+    noteType: 'outage', noteTitle: '', noteText: '', published: false,
+    selectedSubId: null, teamSearch: ''
+  };
+
+  componentDidMount() {
+    this._onKeyDown = e => {
+      if (e.key !== 'Escape') return;
+      if (this.state.selectedSubId) this.setState({ selectedSubId: null });
+      else if (this.state.dialogRowId) this.setState({ dialogRowId: null });
+    };
+    document.addEventListener('keydown', this._onKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this._onKeyDown);
+  }
+
+  renderVals() {
+    const st = this.state;
+    const me = st.staff.find(s => s.id === st.meId) || null;
+    const isLogin = st.view === 'login';
+    const canTeam = !!me && me.role === 'owner';
+    const canPublish = !!me && (me.role === 'owner' || me.role === 'dispatcher');
+    const canSeePaid = !!me && (me.role === 'owner' || me.role === 'accountant');
+    const isOverview = !isLogin && st.view === 'overview';
+    const isTeam = !isLogin && st.view === 'team' && canTeam;
+
+    const metrics = [
+      { label: 'Показания через приложение', value: '412' },
+      ...(canSeePaid ? [{ label: 'Оплачено через приложение', value: money(286400) }] : []),
+      { label: 'Отправлено уведомлений', value: '3' },
+      { label: 'Абонентов в приложении', value: '538' }
+    ];
+
+    const max = Math.max(...DAY_VALUES);
+    const dialogRow = st.staff.find(s => s.id === st.dialogRowId) || null;
+
+    const bannerStyle = st.banner ? (
+      st.banner.tone === 'warning' ? { bg: 'var(--warning-soft)', color: 'var(--warning-text)', icon: 'warning' }
+      : st.banner.tone === 'error' ? { bg: 'var(--error-soft)', color: 'var(--error)', icon: 'error' }
+      : { bg: 'var(--success-soft)', color: 'var(--success-text)', icon: 'check_circle' }
+    ) : null;
+
+    return {
+      isLogin, isOverview, isTeam, canTeam, canPublish,
+      selectStyle: SELECT_STYLE, selectFocusStyle: SELECT_FOCUS_STYLE, selectIconStyle: SELECT_ICON_STYLE,
+      email: st.email, password: st.password, loginError: st.loginError, loginBanner: st.loginBanner,
+      loginBtnState: (!st.email.trim() || !st.password.trim()) ? 'disabled' : 'default',
+      onEmail: e => this.setState({ email: e.target.value, loginError: '' }),
+      onPassword: e => this.setState({ password: e.target.value, loginError: '' }),
+      submitLogin: () => {
+        const email = st.email.trim().toLowerCase();
+        const match = st.staff.find(s => s.status === 'active' && s.email.toLowerCase() === email);
+        if (match) this.setState({ view: 'overview', meId: match.id, password: '', loginError: '', loginBanner: '' });
+        else this.setState({ loginError: 'Сотрудник с такой почтой не найден' });
+      },
+      forgotPassword: () => this.setState({ loginBanner: 'В демо-версии недоступно' }),
+
+      meName: me ? me.name : '',
+      meRoleLabel: me ? ROLE_LABELS[me.role] : '',
+      logout: () => this.setState({ view: 'login', meId: null, email: '', password: '', loginError: '', loginBanner: '', banner: null }),
+
+      overviewTabColor: isOverview ? 'var(--primary)' : 'var(--text-secondary)',
+      overviewTabBorder: isOverview ? 'var(--primary)' : 'transparent',
+      teamTabColor: isTeam ? 'var(--primary)' : 'var(--text-secondary)',
+      teamTabBorder: isTeam ? 'var(--primary)' : 'transparent',
+      goOverview: () => this.setState({ view: 'overview', banner: null }),
+      goTeam: () => this.setState({ view: 'team', banner: null }),
+
+      banner: bannerStyle ? { ...bannerStyle, title: st.banner.title } : null,
+      closeBanner: () => this.setState({ banner: null }),
+
+      metrics,
+      overviewCols: canPublish ? '1fr 380px' : '1fr',
+      dayBars: DAY_VALUES.map((v, i) => ({ day: String(i + 1), height: Math.max((v / max) * 100, 6) + '%' })),
+      rows: ROWS.map((r, i) => ({ time: r.time, account: r.account, street: r.street, meter: r.meter, ok: r.ok, warn: !r.ok, onOpen: () => this.setState({ selectedSubId: SUBSCRIBERS[i].id, searchOpen: false }) })),
+
+      drawerOpen: !!st.selectedSubId,
+      closeDrawer: () => this.setState({ selectedSubId: null }),
+      sub: (() => {
+        const s = SUBSCRIBERS.find(x => x.id === st.selectedSubId);
+        if (!s) return {};
+        return {
+          initials: initials(s.name), name: s.name, account: s.account, address: s.street,
+          phoneTel: 'tel:' + s.phone.replace(/[^\d+]/g, ''), phoneDisplay: s.phone,
+          appLabel: s.hasApp ? 'Есть приложение' : 'Только бумага',
+          appBg: s.hasApp ? 'var(--success-soft)' : 'var(--bg)',
+          appColor: s.hasApp ? 'var(--success-text)' : 'var(--text-secondary)',
+          meters: s.meters,
+          readings: s.readings,
+          showBilling: canSeePaid,
+          debtLabel: s.debt > 0 ? money(s.debt) : 'нет задолженности',
+          debtColor: s.debt > 0 ? 'var(--error)' : 'var(--success-text)',
+          payments: s.payments.map(p => ({ date: p.date, amountLabel: money(p.amount), method: p.method }))
+        };
+      })(),
+
+      noteType: st.noteType,
+      onTypeChange: e => this.setState({ noteType: e.target.value, published: false }),
+      noteTitle: st.noteTitle,
+      onTitleChange: e => this.setState({ noteTitle: e.target.value, published: false }),
+      noteText: st.noteText,
+      onTextChange: e => this.setState({ noteText: e.target.value, published: false }),
+      published: st.published,
+      publish: () => this.setState({ published: true }),
+
+      staffRows: st.staff.filter(s => {
+        const q = st.teamSearch.trim().toLowerCase();
+        if (!q) return true;
+        return (s.name || '').toLowerCase().includes(q) || s.email.toLowerCase().includes(q);
+      }).map(s => {
+        const isSelf = !!me && s.id === me.id;
+        return {
+          nameDisplay: s.name || s.email.split('@')[0],
+          nameHint: s.name ? null : 'Имя появится после первого входа',
+          email: s.email, role: s.role, roleLabel: ROLE_LABELS[s.role],
+          statusLabel: s.status === 'active' ? 'Активен' : s.status === 'invited' ? 'Приглашён' : 'Отключён',
+          statusBg: s.status === 'active' ? 'var(--success-soft)' : s.status === 'invited' ? 'var(--warning-soft)' : 'var(--bg)',
+          statusColor: s.status === 'active' ? 'var(--success-text)' : s.status === 'invited' ? 'var(--warning-text)' : 'var(--text-secondary)',
+          rowBg: st.highlightId === s.id ? 'var(--primary-soft)' : 'transparent',
+          isSelf,
+          showDisable: !isSelf && s.status !== 'disabled',
+          showEnable: !isSelf && s.status === 'disabled',
+          onRoleChange: e => {
+            const newRole = e.target.value;
+            this.setState({
+              staff: st.staff.map(x => x.id === s.id ? { ...x, role: newRole } : x),
+              banner: { tone: 'success', title: React.createElement(React.Fragment, null, 'Роль изменена: ', React.createElement('b', null, s.name || s.email), ' — ' + ROLE_LABELS[newRole]) }
+            });
+          },
+          onDisableClick: () => this.setState({ dialogRowId: s.id }),
+          onEnableClick: () => this.setState({
+            staff: st.staff.map(x => x.id === s.id ? { ...x, status: 'active' } : x),
+            banner: { tone: 'success', title: 'Доступ восстановлен' }
+          })
+        };
+      }),
+      noStaffResults: st.teamSearch.trim().length > 0 && !st.staff.some(s => (s.name || '').toLowerCase().includes(st.teamSearch.trim().toLowerCase()) || s.email.toLowerCase().includes(st.teamSearch.trim().toLowerCase())),
+      teamSearch: st.teamSearch,
+      onTeamSearch: e => this.setState({ teamSearch: e.target.value }),
+      resetTeamSearch: () => this.setState({ teamSearch: '' }),
+
+      dialogOpen: !!dialogRow,
+      dialogText: dialogRow ? React.createElement(React.Fragment, null, React.createElement('b', null, dialogRow.name || dialogRow.email), ' потеряет доступ к панели. Вернуть доступ сможет владелец') : '',
+      closeDialog: () => this.setState({ dialogRowId: null }),
+      confirmDisable: () => {
+        if (!dialogRow) return;
+        this.setState({
+          staff: st.staff.map(x => x.id === dialogRow.id ? { ...x, status: 'disabled' } : x),
+          dialogRowId: null,
+          banner: { tone: 'success', title: 'Доступ отключён' }
+        });
+      },
+
+      inviteOpen: st.inviteOpen,
+      openInvite: () => this.setState({ inviteOpen: true, inviteName: '', inviteEmail: '', inviteRole: 'dispatcher', inviteEmailError: '' }),
+      closeInvite: () => this.setState({ inviteOpen: false }),
+      onScrimClick: () => this.setState({ inviteOpen: false }),
+      stopClick: e => e.stopPropagation(),
+      inviteName: st.inviteName,
+      onInviteName: e => this.setState({ inviteName: e.target.value }),
+      inviteEmail: st.inviteEmail,
+      onInviteEmail: e => this.setState({ inviteEmail: e.target.value, inviteEmailError: '' }),
+      inviteRole: st.inviteRole,
+      onInviteRole: e => this.setState({ inviteRole: e.target.value }),
+      inviteRoleHint: ROLE_RIGHTS[st.inviteRole],
+      inviteEmailError: st.inviteEmailError,
+      inviteSendDisabled: !EMAIL_RE.test(st.inviteEmail.trim()),
+      sendInvite: () => {
+        const email = st.inviteEmail.trim();
+        if (!EMAIL_RE.test(email)) { this.setState({ inviteEmailError: 'Введите почту в формате name@uspvodokanal.ru' }); return; }
+        const id = 'u' + Date.now();
+        const name = st.inviteName.trim() || null;
+        this.setState({
+          staff: [{ id, name, email, role: st.inviteRole, status: 'invited' }, ...st.staff],
+          inviteOpen: false, highlightId: id,
+          banner: { tone: 'success', title: React.createElement(React.Fragment, null, 'Приглашение отправлено на ', React.createElement('b', null, email), ' (демо)') }
+        });
+        setTimeout(() => this.setState({ highlightId: null }), 3000);
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>

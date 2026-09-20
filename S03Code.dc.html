@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S03 · Код из SMS</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:390px;height:844px;overflow-y:auto;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
+  <x-import component-from-global-scope="Ds_722904.TopBar" show-back="{{ yes }}" on-back="{{ back }}" hint-size="390px,48px"></x-import>
+  <div style="padding:8px 20px 0">
+    <h1 style="margin:0;font-size:calc(28px * var(--uv-text-scale, 1));line-height:1.21;font-weight:700;letter-spacing:-0.02em">Введите код</h1>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:24px;padding:24px 20px 32px">
+    <div style="display:flex;justify-content:center;align-items:center;gap:6px;white-space:nowrap;font-size:calc(15px * var(--uv-text-scale, 1))">
+      <span>Отправили на +7 {{ maskedPhone }}</span>
+      <button onClick="{{ back }}" class="uv-btn uv-btn--text" style="height:auto;padding:0;width:auto;font-size:inherit">Изменить</button>
+    </div>
+    <div style="display:flex;justify-content:center;gap:12px">
+      <sc-for list="{{ cells }}" as="cell" hint-placeholder-count="4">
+        <div class="{{ cell.cellClass }}">
+          <input ref="{{ cell.setRef }}" type="tel" maxlength="1" inputmode="numeric" aria-label="{{ cell.label }}" value="{{ cell.value }}" onChange="{{ cell.onChange }}" onKeyDown="{{ cell.onKeyDown }}" style="width:100%;height:100%;border:none;background:transparent;text-align:center;font:inherit;font-size:calc(28px * var(--uv-text-scale, 1));font-weight:600;color:var(--text-primary)">
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:6px">
+      <sc-if value="{{ timerRunning }}"><span style="font-size:calc(15px * var(--uv-text-scale, 1));color:var(--text-secondary)">{{ timerText }}</span></sc-if>
+      <sc-if value="{{ canResend }}">
+        <span style="font-size:calc(15px * var(--uv-text-scale, 1));color:var(--text-secondary)">Не пришёл код?</span>
+        <button onClick="{{ resend }}" class="uv-btn uv-btn--text-small">Отправить снова</button>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;app&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;act&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}">
+function formatPhone(d) {
+  let out = d.slice(0, 3);
+  if (d.length > 3) out += ' ' + d.slice(3, 6);
+  if (d.length > 6) out += '-' + d.slice(6, 8);
+  if (d.length > 8) out += '-' + d.slice(8, 10);
+  return out;
+}
+const DEMO = { phone: '9000000000' };
+const NOOP = { back(){}, codeOk(){} };
+
+class Component extends DCLogic {
+  state = { digits: ['', '', '', ''], focus: 0, seconds: 59 };
+  nodes = [];
+
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      this.setState(s => s.seconds > 0 ? { seconds: s.seconds - 1 } : {});
+    }, 1000);
+    if (this.nodes[0]) this.nodes[0].focus();
+  }
+
+  componentWillUnmount() { clearInterval(this.timer); }
+
+  setDigit(i, raw, act) {
+    const v = raw.replace(/\D/g, '').slice(-1);
+    this.setState(s => {
+      const digits = s.digits.slice();
+      digits[i] = v;
+      return { digits: digits, focus: v && i < 3 ? i + 1 : i };
+    }, () => {
+      if (v && i < 3 && this.nodes[i + 1]) this.nodes[i + 1].focus();
+      if (v && i === 3) act.codeOk();
+    });
+  }
+
+  onKeyDown(i, e) {
+    if (e.key === 'Backspace' && !this.state.digits[i] && i > 0 && this.nodes[i - 1]) {
+      this.nodes[i - 1].focus();
+    }
+  }
+
+  renderVals() {
+    const app = this.props.app ?? DEMO;
+    const act = this.props.act ?? NOOP;
+    const cells = this.state.digits.map((v, i) => ({
+      value: v,
+      label: 'Цифра ' + (i + 1) + ' из 4',
+      cellClass: 'uv-otp__cell' + (this.state.focus === i ? ' is-focus' : ''),
+      setRef: node => { this.nodes[i] = node; },
+      onChange: e => this.setDigit(i, e.target.value, act),
+      onKeyDown: e => this.onKeyDown(i, e)
+    }));
+    return {
+      yes: true,
+      back: () => act.back(),
+      maskedPhone: formatPhone(app.phone || DEMO.phone),
+      cells: cells,
+      timerRunning: this.state.seconds > 0,
+      timerText: 'Отправить код повторно через 0:' + String(this.state.seconds).padStart(2, '0'),
+      canResend: this.state.seconds === 0,
+      resend: () => {
+        this.setState({ digits: ['', '', '', ''], focus: 0, seconds: 59 });
+        if (this.nodes[0]) this.nodes[0].focus();
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Водоканал">
+<link rel="apple-touch-icon" href="./logos/app-icon.png">
+<link rel="icon" href="./logos/app-icon.png">
+<link rel="manifest" href="./manifest.webmanifest">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Успенский Водоканал — прототип</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0..1,0&display=block">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+  <style>
+    /* TabBar: тонкая линия сверху вместо тени, подпись 13px (иконки уже 24px из --size-icon) */
+    .uv-tabbar { box-shadow: none; border-top: 1px solid var(--divider); }
+    .uv-tab { font-size: 13px; }
+  </style>
+</helmet>
+<div class="uv" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;font-family:var(--font-sans)">
+  <div style="flex:1;min-height:0;overflow:hidden;--uv-text-scale:{{ textScale }}">
+    <sc-if value="{{ isS01 }}" hint-placeholder-val="{{ true }}"><dc-import name="S01Welcome" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS02 }}"><dc-import name="S02Phone" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS03 }}"><dc-import name="S03Code" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS04 }}"><dc-import name="S04Account" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS05 }}"><dc-import name="S05Home" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
+    <sc-if value="{{ isS06 }}"><dc-import name="S06Readings" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
+    <sc-if value="{{ isS07 }}"><dc-import name="S07Confirm" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS08 }}"><dc-import name="S08Done" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS09 }}"><dc-import name="S09History" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
+    <sc-if value="{{ isS10 }}"><dc-import name="S10Pay" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS11 }}"><dc-import name="S11Paid" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS12 }}"><dc-import name="S12Notifications" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS13 }}"><dc-import name="S13More" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
+    <sc-if value="{{ isS15 }}"><dc-import name="S15Fraud" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    <sc-if value="{{ isS16 }}"><dc-import name="S16Privacy" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+  </div>
+  <sc-if value="{{ showTabBar }}">
+    <div style="flex:none;background:var(--surface);padding-bottom:16px">
+      <x-import component-from-global-scope="Ds_722904.TabBar" active="{{ tabKey }}" on-change="{{ onTabChange }}" hint-size="390px,64px"></x-import>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;S01&quot;,&quot;S02&quot;,&quot;S05&quot;],&quot;default&quot;:&quot;S01&quot;,&quot;tsType&quot;:&quot;'S01' | 'S02' | 'S05'&quot;,&quot;section&quot;:&quot;Демо&quot;},&quot;startLargeText&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Демо&quot;}}">
+function demo(meterCount) {
+  const mc = meterCount === 1 ? 1 : 2;
+  const meters = mc === 1
+    ? [ { id: 'home', title: 'Счётчик воды', serial: '1234567', prev: 123, prevDate: '24.08.2026', value: null } ]
+    : [
+        { id: 'home', title: 'Дом', serial: '1234567', prev: 123, prevDate: '24.08.2026', value: null },
+        { id: 'garden', title: 'Полив', serial: '7654321', prev: 457, prevDate: '24.08.2026', value: null }
+      ];
+  const augustValues = mc === 1 ? { home: 123 } : { home: 123, garden: 457 };
+  const julyValues = mc === 1 ? { home: 113 } : { home: 113, garden: 440 };
+  return {
+    screen: 'S01',
+    stack: [],
+    phone: '',
+    account: { number: '12-34567', owner: 'Петрова Анна Ивановна', greeting: 'Анна Ивановна', address: 'с. Успенское, ул. Садовая, д. 12' },
+    meterCount: mc,
+    meters: meters,
+    deadline: '25 сентября',
+    readingsSent: false, readingsSentAt: '', receiptNo: '',
+    debt: 1248.60, paid: false, payAmount: 1248.60, payMethod: 'sbp',
+    lastPayment: null,
+    payments: [ { date: '24.08.2026', amount: 1105.20, method: 'СБП' }, { date: '22.07.2026', amount: 980.40, method: 'Карта' } ],
+    usage: [ { m: 'апр', v: 6 }, { m: 'май', v: 7 }, { m: 'июн', v: 9 }, { m: 'июл', v: 11 }, { m: 'авг', v: 10 }, { m: 'сен', v: null } ],
+    readingsHistory: [ { month: 'Август 2026', date: '24.08.2026', values: augustValues }, { month: 'Июль 2026', date: '23.07.2026', values: julyValues } ],
+    notifications: [
+      { id: 'n1', kind: 'warning', tag: 'Отключение', title: 'Плановое отключение воды 23 сентября, 9:00–14:00', text: 'ул. Садовая, ул. Ленина. Причина — ремонт водопровода.', date: 'Сегодня, 08:15', read: false },
+      { id: 'n2', kind: 'info', tag: 'Напоминание', title: 'Передайте показания до 25 сентября', text: '', date: 'Вчера', read: false },
+      { id: 'n3', kind: 'success', tag: 'Выполнено', title: 'Работы завершены, водоснабжение восстановлено', text: '', date: '12 сентября', read: true }
+    ],
+    largeText: false,
+    historyTab: 'readings',
+    hotline: '+7 (86140) 57-301', hotlineTel: '+78614057301'
+  };
+}
+
+const NBSP = '\u00A0';
+const TAB_SCREENS = { home: 'S05', readings: 'S06', payments: 'S09', more: 'S13' };
+const SCREEN_TABS = { S05: 'home', S06: 'readings', S09: 'payments', S13: 'more' };
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const start = props.startScreen || 'S01';
+    const s = demo(2);
+    s.screen = start;
+    if (start === 'S05') s.phone = '9000000000';
+    s.largeText = !!props.startLargeText;
+    this.state = { app: s };
+  }
+
+  up(patch) { this.setState(st => ({ app: Object.assign({}, st.app, typeof patch === 'function' ? patch(st.app) : patch) })); }
+
+  money(n) {
+    const parts = Number(n).toFixed(2).split('.');
+    const head = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, NBSP);
+    return head + ',' + parts[1] + NBSP + '₽';
+  }
+
+  reading(n) { return n === null || n === undefined || n === '' ? '' : String(n).padStart(5, '0'); }
+
+  makeAct() {
+    const self = this;
+    return {
+      go: id => self.up(a => ({ stack: a.stack.concat([a.screen]), screen: id })),
+      back: () => self.up(a => a.stack.length ? { screen: a.stack[a.stack.length - 1], stack: a.stack.slice(0, -1) } : {}),
+      tab: id => self.up(a => id === 'S09' ? { stack: [], screen: 'S09', historyTab: 'payments' } : { stack: [], screen: id }),
+      home: () => self.up({ stack: [], screen: 'S05' }),
+      setPhone: digits => self.up({ phone: String(digits).replace(/\D/g, '').slice(0, 10) }),
+      codeOk: () => self.up(a => ({ screen: 'S04', stack: a.stack })),
+      linkAccount: () => self.up({ stack: [], screen: 'S05' }),
+      setMeterCount: n => self.up(a => {
+        const mc = Number(n) === 1 ? 1 : 2;
+        const fresh = demo(mc);
+        return { meterCount: mc, meters: fresh.meters, readingsHistory: fresh.readingsHistory };
+      }),
+      setReading: (meterId, value) => self.up(a => ({
+        meters: a.meters.map(m => m.id === meterId ? Object.assign({}, m, { value: value === null || value === '' ? null : Number(value) }) : m)
+      })),
+      submitReadings: () => self.up(a => {
+        const allEntered = a.meters.every(m => m.value !== null && m.value !== undefined);
+        const total = allEntered ? a.meters.reduce((sum, m) => sum + (m.value - m.prev), 0) : null;
+        const values = {};
+        a.meters.forEach(m => { values[m.id] = m.value; });
+        return {
+          readingsSent: true,
+          readingsSentAt: 'Сегодня, 10:42',
+          receiptNo: '2026-09-0418',
+          usage: a.usage.map(u => u.m === 'сен' ? { m: 'сен', v: total } : u),
+          readingsHistory: [{ month: 'Сентябрь 2026', date: '21.09.2026', values: values }].concat(a.readingsHistory),
+          stack: [], screen: 'S08'
+        };
+      }),
+      setPayAmount: n => self.up({ payAmount: Number(n) }),
+      setPayMethod: m => self.up({ payMethod: m }),
+      pay: () => self.up(a => {
+        const lastPayment = { date: 'Сегодня, 10:45', amount: a.payAmount, method: a.payMethod === 'card' ? 'Карта' : 'СБП', receiptNo: 'Ч-000418' };
+        return {
+          paid: true,
+          debt: Math.max(0, a.debt - a.payAmount),
+          lastPayment: lastPayment,
+          payments: [lastPayment].concat(a.payments),
+          stack: [], screen: 'S11'
+        };
+      }),
+      openHistory: tab => self.up(a => ({ historyTab: tab, stack: a.stack.concat([a.screen]), screen: 'S09' })),
+      setHistoryTab: tab => self.up({ historyTab: tab }),
+      markAllRead: () => self.up(a => a.notifications.some(n => !n.read) ? { notifications: a.notifications.map(n => Object.assign({}, n, { read: true })) } : {}),
+      toggleLargeText: () => self.up(a => ({ largeText: !a.largeText })),
+      logout: () => { const s = demo(this.state.app.meterCount); s.screen = 'S02'; this.setState({ app: s }); },
+      deleteAccount: () => { const s = demo(this.state.app.meterCount); s.screen = 'S01'; this.setState({ app: s }); },
+      money: n => self.money(n),
+      reading: n => self.reading(n)
+    };
+  }
+
+  renderVals() {
+    const a = this.state.app;
+    const consumption = {};
+    a.meters.forEach(m => { consumption[m.id] = (m.value === null || m.value === undefined) ? null : m.value - m.prev; });
+    const unreadCount = a.notifications.filter(n => !n.read).length;
+    const canSubmit = a.meters.every(m => m.value !== null && m.value !== undefined && m.value >= m.prev);
+    const allEntered = a.meters.every(m => m.value !== null && m.value !== undefined);
+    const totalConsumption = allEntered ? a.meters.reduce((sum, m) => sum + (m.value - m.prev), 0) : null;
+    const single = a.meters.length === 1;
+    const app = Object.assign({}, a, { unreadCount: unreadCount, consumption: consumption, totalConsumption: totalConsumption, canSubmit: canSubmit, single: single });
+    const act = this.makeAct();
+    const vals = {
+      app: app,
+      act: act,
+      textScale: a.largeText ? 1.25 : 1,
+      showTabBar: !!SCREEN_TABS[a.screen],
+      tabKey: SCREEN_TABS[a.screen] || 'home',
+      onTabChange: key => act.tab(TAB_SCREENS[key])
+    };
+    ['S01','S02','S03','S04','S05','S06','S07','S08','S09','S10','S11','S12','S13','S15','S16'].forEach(id => { vals['is' + id] = a.screen === id; });
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

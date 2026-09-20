@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S02 · Вход по телефону</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:390px;height:844px;overflow-y:auto;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
+  <div ref="{{ setLogoWrap }}" style="display:flex;justify-content:center;padding:24px 20px 0">
+    <x-import component-from-global-scope="Ds_722904.Logo" hint-size="auto,32px"></x-import>
+  </div>
+  <div style="padding:32px 20px 0">
+    <h1 style="margin:0;font-size:calc(28px * var(--uv-text-scale, 1));line-height:1.21;font-weight:700;letter-spacing:-0.02em">Вход</h1>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:28px;padding:24px 20px 32px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <label for="s02-phone" class="uv-field__label">Номер телефона</label>
+      <div style="position:relative">
+        <span aria-hidden="true" style="position:absolute;left:16px;top:0;bottom:0;display:flex;align-items:center;font-size:calc(17px * var(--uv-text-scale, 1));color:var(--text-primary);pointer-events:none">+7</span>
+        <input id="s02-phone" class="uv-field__input" style="width:100%;box-sizing:border-box;padding-left:48px" inputmode="numeric" autocomplete="tel-national" placeholder="900 000-00-00" defaultValue="{{ maskedPhone }}" onChange="{{ onPhoneChange }}">
+      </div>
+      <sc-if value="{{ showHint }}"><span class="uv-field__hint">Введите номер телефона</span></sc-if>
+    </div>
+    <x-import component-from-global-scope="Ds_722904.Button" state="{{ btnState }}" on-click="{{ getCode }}" hint-size="100%,52px">Получить код</x-import>
+    <div style="display:flex;justify-content:center">
+      <a href="{{ hotlineHref }}" class="uv-btn uv-btn--text-small">
+        <span aria-hidden="true" class="uv-icon">call</span>
+        Нужна помощь? Позвоните нам
+      </a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;app&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;act&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}">
+function formatPhone(d) {
+  let out = d.slice(0, 3);
+  if (d.length > 3) out += ' ' + d.slice(3, 6);
+  if (d.length > 6) out += '-' + d.slice(6, 8);
+  if (d.length > 8) out += '-' + d.slice(8, 10);
+  return out;
+}
+const DEMO = { phone: '9000000000', hotline: '+7 (86140) 57-301', hotlineTel: '+78614057301' };
+const NOOP = { go(){}, setPhone(){} };
+
+class Component extends DCLogic {
+  fixLogo() {
+    const img = this.logoWrap && this.logoWrap.querySelector('.uv-logo__mark');
+    if (img && img.getAttribute('src') !== 'logos/uv-mark.png') img.src = 'logos/uv-mark.png';
+  }
+
+  componentDidMount() {
+    this.fixLogo();
+    this._logoTimer = setInterval(() => this.fixLogo(), 200);
+  }
+
+  componentWillUnmount() { clearInterval(this._logoTimer); }
+
+  renderVals() {
+    const app = this.props.app ?? DEMO;
+    const act = this.props.act ?? NOOP;
+    const phone = app.phone || '';
+    return {
+      setLogoWrap: node => { this.logoWrap = node; },
+      maskedPhone: formatPhone(phone),
+      showHint: phone.length !== 10,
+      btnState: phone.length === 10 ? 'default' : 'disabled',
+      onPhoneChange: e => {
+        const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+        act.setPhone(digits);
+        e.target.value = formatPhone(digits);
+      },
+      getCode: () => { if (phone.length === 10) act.go('S03'); },
+      hotlineHref: 'tel:' + (app.hotlineTel || DEMO.hotlineTel),
+      noop: () => {}
+    };
+  }
+}
+
+</script>
+</body>
+</html>

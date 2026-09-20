@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S05 · Главная</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:390px;height:764px;overflow-y:auto;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
+  <div style="display:flex;align-items:center;gap:12px;padding:20px 20px 0">
+    <img src="logos/uv-mark.png" alt="" style="width:32px;height:32px;flex:none">
+    <span style="flex:1;font-size:calc(20px * var(--uv-text-scale, 1));font-weight:600">Здравствуйте, {{ greeting }}</span>
+    <button aria-label="{{ bellLabel }}" onClick="{{ notes }}" class="uv-topbar__btn">
+      <span aria-hidden="true" class="uv-icon">notifications</span>
+      <sc-if value="{{ hasUnread }}"><span class="uv-dot"></span></sc-if>
+    </button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:24px;padding:20px 20px 32px">
+    <div class="uv-card">
+      <p class="uv-card__meta" style="margin:0">{{ address }}</p>
+      <p class="uv-card__meta" style="margin:0;color:var(--text-primary);font-weight:600">Лицевой счёт {{ accountNumber }}</p>
+      <span class="uv-card__meta">К оплате</span>
+      <span class="uv-amount">{{ amountText }}</span>
+      <x-import component-from-global-scope="Ds_722904.StatusBanner" tone="{{ bannerTone }}" title="{{ bannerTitle }}" text="{{ bannerText }}" hint-size="100%,auto"></x-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-if value="{{ showReadingsPrimary }}">
+        <x-import component-from-global-scope="Ds_722904.Button" on-click="{{ readings }}" hint-size="100%,52px">Передать показания</x-import>
+      </sc-if>
+      <sc-if value="{{ showPaySecondaryPlain }}">
+        <x-import component-from-global-scope="Ds_722904.Button" variant="secondary" on-click="{{ pay }}" hint-size="100%,52px">Оплатить</x-import>
+      </sc-if>
+      <sc-if value="{{ showPayPrimary }}">
+        <x-import component-from-global-scope="Ds_722904.Button" on-click="{{ pay }}" hint-size="100%,52px">Оплатить {{ debtMoney }}</x-import>
+      </sc-if>
+      <sc-if value="{{ showReadingsSecondary }}">
+        <x-import component-from-global-scope="Ds_722904.Button" variant="secondary" on-click="{{ readings }}" hint-size="100%,52px">Показания</x-import>
+      </sc-if>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 style="margin:0;font-size:calc(20px * var(--uv-text-scale, 1));line-height:1.3;font-weight:600">Уведомления</h2>
+      <x-import component-from-global-scope="Ds_722904.NotificationCard" type="{{ noteType }}" title="{{ noteTitle }}" text="{{ noteText }}" date="{{ noteDate }}" read="{{ noteRead }}" hint-size="100%,auto"></x-import>
+      <button onClick="{{ notes }}" class="uv-btn uv-btn--text" style="align-self:center">Все уведомления</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:764},&quot;app&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;act&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}">
+const DEMO = {
+  account: { greeting: 'Анна Ивановна', number: '12-34567', address: 'с. Успенское, ул. Садовая, д. 12' },
+  debt: 1248.60, readingsSent: false, readingsSentAt: '', deadline: '25 сентября', unreadCount: 2,
+  notifications: [
+    { id: 'n1', kind: 'warning', tag: 'Отключение', title: 'Плановое отключение воды 23 сентября, 9:00–14:00', text: 'ул. Садовая, ул. Ленина. Причина — ремонт водопровода.', date: 'Сегодня, 08:15', read: false },
+    { id: 'n2', kind: 'info', tag: 'Напоминание', title: 'Передайте показания до 25 сентября', text: '', date: 'Вчера', read: false }
+  ]
+};
+const NOOP = { go(){}, money(n){ const p=Number(n).toFixed(2).split('.'); return p[0].replace(/\B(?=(\d{3})+(?!\d))/g,'\u00A0')+','+p[1]+'\u00A0₽'; } };
+const KIND_TO_TYPE = { warning: 'outage', info: 'reminder', success: 'done' };
+
+class Component extends DCLogic {
+  renderVals() {
+    const app = this.props.app ?? DEMO;
+    const act = this.props.act ?? NOOP;
+    const sent = !!app.readingsSent;
+    const hasDebt = app.debt > 0;
+    const notes = app.notifications || [];
+    const firstUnread = notes.find(n => !n.read) || notes[0];
+    return {
+      greeting: app.account.greeting,
+      bellLabel: (app.unreadCount ?? 0) > 0 ? 'Уведомления, есть новые' : 'Уведомления',
+      hasUnread: (app.unreadCount ?? 0) > 0,
+      notes: () => act.go('S12'),
+      address: app.account.address,
+      accountNumber: app.account.number,
+      amountText: hasDebt ? act.money(app.debt) : '0,00\u00A0₽ — долга нет',
+      bannerTone: sent ? 'success' : 'warning',
+      bannerTitle: sent ? 'Показания за сентябрь переданы' : 'Показания за сентябрь не переданы',
+      bannerText: sent ? app.readingsSentAt : ('Передайте до ' + app.deadline),
+      debtMoney: act.money(app.debt),
+      showReadingsPrimary: !sent,
+      showPaySecondaryPlain: !sent && hasDebt,
+      showPayPrimary: sent && hasDebt,
+      showReadingsSecondary: sent && !hasDebt,
+      readings: () => act.go('S06'),
+      pay: () => act.go('S10'),
+      noteType: firstUnread ? (KIND_TO_TYPE[firstUnread.kind] || 'reminder') : 'reminder',
+      noteTitle: firstUnread ? firstUnread.title : '',
+      noteText: firstUnread ? firstUnread.text : '',
+      noteDate: firstUnread ? firstUnread.date : '',
+      noteRead: firstUnread ? !!firstUnread.read : false
+    };
+  }
+}
+
+</script>
+</body>
+</html>

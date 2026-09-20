@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S06 · Показания</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:390px;height:764px;overflow-y:auto;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
+  <div style="display:flex;flex-direction:column;gap:20px;padding:24px 20px 32px">
+    <h1 style="margin:0;font-size:calc(28px * var(--uv-text-scale, 1));line-height:1.21;font-weight:700;letter-spacing:-0.02em">Передача показаний</h1>
+    <x-import component-from-global-scope="Ds_722904.StatusBanner" tone="info" title="Показания принимаются до 25 сентября" hint-size="100%,auto"></x-import>
+
+    <sc-if value="{{ sent }}">
+      <x-import component-from-global-scope="Ds_722904.StatusBanner" tone="success" title="Показания за сентябрь переданы" text="{{ sentAt }}" hint-size="100%,auto"></x-import>
+      <sc-for list="{{ meterRows }}" as="m" hint-placeholder-count="2">
+        <div class="uv-card">
+          <h3 class="uv-card__title">{{ m.title }}</h3>
+          <p class="uv-card__meta">№ {{ m.serial }} · передано {{ m.sentValueText }} м³</p>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ notSent }}">
+      <sc-for list="{{ meterRows }}" as="m" hint-placeholder-count="2">
+        <div class="uv-card">
+          <h3 class="uv-card__title">{{ m.title }}</h3>
+          <p class="uv-card__meta">№ {{ m.serial }} · прошлое показание {{ m.prevText }} м³ от {{ m.prevDate }}</p>
+          <div class="uv-reading__wrap">
+            <input class="{{ m.inputClass }}" value="{{ m.raw }}" inputmode="numeric" onChange="{{ m.onChange }}" aria-label="{{ m.title }}, новое показание">
+            <span class="uv-reading__unit">м³</span>
+          </div>
+          <sc-if value="{{ m.error }}"><span class="uv-field__error"><span aria-hidden="true" class="uv-icon uv-icon--fill">error</span>{{ m.error }}</span></sc-if>
+          <sc-if value="{{ m.warning }}"><div class="uv-banner uv-banner--warning"><span aria-hidden="true" class="uv-icon uv-icon--fill">warning</span><div class="uv-banner__body"><span class="uv-banner__title">{{ m.warning }}</span></div></div></sc-if>
+          <sc-if value="{{ m.usageText }}"><span class="uv-reading__calc">Расход: {{ m.usageText }} м³</span></sc-if>
+        </div>
+      </sc-for>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <x-import component-from-global-scope="Ds_722904.Button" state="{{ nextState }}" on-click="{{ next }}" hint-size="100%,52px">Продолжить</x-import>
+        <sc-if value="{{ hint }}"><span class="uv-field__hint" style="text-align:center">{{ hint }}</span></sc-if>
+      </div>
+    </sc-if>
+
+    <button onClick="{{ history }}" class="uv-btn uv-btn--text" style="align-self:center">История показаний</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:764},&quot;app&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;act&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}">
+const DEMO = { meters: [
+  { id: 'home', title: 'Дом', serial: '1234567', prev: 123, prevDate: '24.08.2026', value: null },
+  { id: 'garden', title: 'Полив', serial: '7654321', prev: 457, prevDate: '24.08.2026', value: null }
+], readingsSent: false, readingsSentAt: '', single: false, canSubmit: false };
+const NOOP = { go(){}, setReading(){}, openHistory(){}, reading: n => String(n).padStart(5, '0') };
+
+class Component extends DCLogic {
+  state = { raw: {} };
+
+  renderVals() {
+    const app = this.props.app ?? DEMO;
+    const act = this.props.act ?? NOOP;
+    const sent = !!app.readingsSent;
+    const single = app.meters.length === 1;
+
+    const meterRows = app.meters.map(m => {
+      if (sent) {
+        return { id: m.id, title: m.title, serial: m.serial, sentValueText: act.reading(m.value) };
+      }
+      const raw = this.state.raw[m.id] ?? (m.value !== null && m.value !== undefined ? String(m.value) : '');
+      const numVal = raw === '' ? null : Number(raw);
+      const usage = numVal !== null ? numVal - m.prev : null;
+      const error = numVal !== null && numVal < m.prev
+        ? ('Новое показание не может быть меньше прошлого (' + act.reading(m.prev) + '). Проверьте цифры на счётчике')
+        : '';
+      const warning = !error && usage !== null && usage > 30 ? 'Расход больше обычного. Проверьте цифры' : '';
+      return {
+        id: m.id, title: m.title, serial: m.serial, prevText: act.reading(m.prev), prevDate: m.prevDate,
+        raw: raw, error: error, warning: warning,
+        inputClass: 'uv-reading__input' + (error ? ' is-error' : ''),
+        usageText: (!error && !warning && numVal !== null) ? String(usage) : '',
+        onChange: e => {
+          const digits = e.target.value.replace(/\D/g, '').slice(0, 5);
+          this.setState(s => ({ raw: Object.assign({}, s.raw, { [m.id]: digits }) }));
+          act.setReading(m.id, digits === '' ? null : Number(digits));
+        }
+      };
+    });
+
+    const anyMissing = app.meters.some(m => m.value === null || m.value === undefined);
+    const anyError = app.meters.some(m => m.value !== null && m.value !== undefined && m.value < m.prev);
+
+    return {
+      sent: sent,
+      notSent: !sent,
+      sentAt: app.readingsSentAt,
+      meterRows: meterRows,
+      nextState: app.canSubmit ? 'default' : 'disabled',
+      hint: app.canSubmit ? '' : (anyMissing ? (single ? 'Введите показания счётчика' : 'Введите показания всех счётчиков') : (anyError ? 'Исправьте ошибку' : '')),
+      next: () => { if (app.canSubmit) act.go('S07'); },
+      history: () => act.openHistory('readings')
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S13 · Ещё</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:390px;height:764px;overflow-y:auto;position:relative;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
+  <div style="display:flex;flex-direction:column;gap:24px;padding:24px 20px 32px">
+    <h1 style="margin:0;font-size:calc(28px * var(--uv-text-scale, 1));line-height:1.21;font-weight:700;letter-spacing:-0.02em">Ещё</h1>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <h2 style="margin:0 0 0 4px;font-size:calc(15px * var(--uv-text-scale, 1));font-weight:600;color:var(--text-secondary)">Мои лицевые счета</h2>
+      <div class="uv-list">
+        <x-import component-from-global-scope="Ds_722904.ListRow" title="{{ accountNumber }}" subtitle="{{ accountAddress }}" hint-size="100%,auto"></x-import>
+        <x-import component-from-global-scope="Ds_722904.ListRow" icon="add" title="Добавить счёт" on-click="{{ addAccount }}" hint-size="100%,auto"></x-import>
+      </div>
+      <sc-if value="{{ showAddInfo }}">
+        <x-import component-from-global-scope="Ds_722904.StatusBanner" tone="info" title="В демо-версии один лицевой счёт" hint-size="100%,auto"></x-import>
+      </sc-if>
+    </div>
+
+    <div class="uv-list">
+      <x-import component-from-global-scope="Ds_722904.ListRow" title="Крупный текст" trailing="{{ largeTextTrailing }}" on-click="{{ toggle }}" hint-size="100%,auto"></x-import>
+      <a href="{{ hotlineHref }}" class="uv-listrow" style="text-decoration:none;color:inherit">
+        <span aria-hidden="true" class="uv-icon">call</span>
+        <div class="uv-listrow__body">
+          <span class="uv-listrow__title">Горячая линия</span>
+          <span class="uv-listrow__sub">{{ hotline }}</span>
+        </div>
+      </a>
+      <x-import component-from-global-scope="Ds_722904.ListRow" title="Как распознать мошенника" trailing="chevron" on-click="{{ fraud }}" hint-size="100%,auto"></x-import>
+      <x-import component-from-global-scope="Ds_722904.ListRow" title="Политика конфиденциальности" trailing="chevron" on-click="{{ privacy }}" hint-size="100%,auto"></x-import>
+    </div>
+
+    <div class="uv-list">
+      <x-import component-from-global-scope="Ds_722904.ListRow" icon="logout" title="Выйти" danger="{{ yes }}" on-click="{{ openLogout }}" hint-size="100%,auto"></x-import>
+      <x-import component-from-global-scope="Ds_722904.ListRow" icon="delete" title="Удалить аккаунт" danger="{{ yes }}" on-click="{{ openDelete }}" hint-size="100%,auto"></x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:12px">
+      <span style="font-size:calc(13px * var(--uv-text-scale, 1));color:var(--text-secondary)">Демонстрационная версия 0.1</span>
+      <a href="./admin/" class="uv-btn uv-btn--text-small">Для сотрудников: панель водоканала (демо)</a>
+    </div>
+  </div>
+
+  <sc-if value="{{ showLogoutDialog }}">
+    <div style="position:absolute;inset:0" class="uv-scrim">
+      <x-import component-from-global-scope="Ds_722904.Dialog" title="Выйти из приложения?" text="Чтобы войти снова, понадобится код из SMS" confirm-label="Выйти" cancel-label="Отмена" on-confirm="{{ doLogout }}" on-cancel="{{ closeDialog }}" hint-size="100%,auto"></x-import>
+    </div>
+  </sc-if>
+  <sc-if value="{{ showDeleteDialog }}">
+    <div style="position:absolute;inset:0" class="uv-scrim">
+      <x-import component-from-global-scope="Ds_722904.Dialog" title="Удалить аккаунт?" text="Данные входа удалятся. Лицевой счёт и история начислений в водоканале останутся" confirm-label="Удалить" cancel-label="Отмена" on-confirm="{{ doDelete }}" on-cancel="{{ closeDialog }}" hint-size="100%,auto"></x-import>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:764},&quot;app&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;act&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}">
+const DEMO = { account: { number: '12-34567', address: 'с. Успенское, ул. Садовая, д. 12' }, largeText: false, hotline: '+7 (86140) 57-301', hotlineTel: '+78614057301' };
+const NOOP = { go(){}, toggleLargeText(){}, logout(){}, deleteAccount(){} };
+
+class Component extends DCLogic {
+  state = { showAddInfo: false, dialog: null };
+
+  renderVals() {
+    const app = this.props.app ?? DEMO;
+    const act = this.props.act ?? NOOP;
+    return {
+      yes: true,
+      accountNumber: app.account.number,
+      accountAddress: app.account.address,
+      addAccount: () => this.setState({ showAddInfo: true }),
+      showAddInfo: this.state.showAddInfo,
+      largeTextTrailing: app.largeText ? 'switch' : 'switch-off',
+      toggle: () => act.toggleLargeText(),
+      hotline: app.hotline,
+      hotlineHref: 'tel:' + (app.hotlineTel || DEMO.hotlineTel),
+      fraud: () => act.go('S15'),
+      privacy: () => act.go('S16'),
+      openLogout: () => this.setState({ dialog: 'logout' }),
+      openDelete: () => this.setState({ dialog: 'delete' }),
+      closeDialog: () => this.setState({ dialog: null }),
+      showLogoutDialog: this.state.dialog === 'logout',
+      showDeleteDialog: this.state.dialog === 'delete',
+      doLogout: () => act.logout(),
+      doDelete: () => act.deleteAccount()
+    };
+  }
+}
+
+</script>
+</body>
+</html>

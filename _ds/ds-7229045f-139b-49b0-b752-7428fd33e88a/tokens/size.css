@@ -1,0 +1,8 @@
+:root {
+  --size-touch-min: 48px;
+  --size-control: 52px;
+  --size-tabbar: 64px;
+  --size-icon: 22px;
+  --size-icon-tab: 24px;
+  --size-screen: 390px;
+}

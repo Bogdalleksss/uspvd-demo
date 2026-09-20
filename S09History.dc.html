@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S09 · История</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:390px;height:764px;overflow-y:auto;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
+  <div style="display:flex;flex-direction:column;gap:20px;padding:24px 20px 32px">
+    <h1 style="margin:0;font-size:calc(28px * var(--uv-text-scale, 1));line-height:1.21;font-weight:700;letter-spacing:-0.02em">История</h1>
+
+    <div style="display:flex;background:var(--primary-soft);border-radius:var(--radius-md);padding:4px;gap:4px">
+      <button onClick="{{ tabReadings }}" style="flex:1;height:40px;border:none;border-radius:calc(var(--radius-md) - 2px);cursor:pointer;font:inherit;font-size:calc(15px * var(--uv-text-scale, 1));background:{{ readingsBg }};color:{{ readingsColor }};font-weight:{{ readingsWeight }}">Показания</button>
+      <button onClick="{{ tabPayments }}" style="flex:1;height:40px;border:none;border-radius:calc(var(--radius-md) - 2px);cursor:pointer;font:inherit;font-size:calc(15px * var(--uv-text-scale, 1));background:{{ paymentsBg }};color:{{ paymentsColor }};font-weight:{{ paymentsWeight }}">Платежи</button>
+    </div>
+
+    <sc-if value="{{ isReadings }}">
+      <div class="uv-card">
+        <h3 class="uv-card__title">Расход, м³</h3>
+        <div class="uv-chart">
+          <sc-for list="{{ usageBars }}" as="b" hint-placeholder-count="6">
+            <div class="{{ b.cls }}">
+              <span class="uv-bar__val">{{ b.valText }}</span>
+              <div class="uv-bar__col" style="height:{{ b.height }}"></div>
+              <span class="uv-bar__month">{{ b.month }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div class="uv-list">
+        <sc-for list="{{ readingRows }}" as="r" hint-placeholder-count="2">
+          <x-import component-from-global-scope="Ds_722904.ListRow" title="{{ r.month }}" subtitle="{{ r.line }}" hint-size="100%,auto"></x-import>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPayments }}">
+      <div class="uv-card">
+        <span class="uv-card__meta">К оплате</span>
+        <span class="uv-amount">{{ debtMoney }}</span>
+        <sc-if value="{{ hasDebt }}">
+          <x-import component-from-global-scope="Ds_722904.Button" on-click="{{ pay }}" hint-size="100%,52px">Оплатить</x-import>
+        </sc-if>
+        <sc-if value="{{ noDebt }}">
+          <div style="display:flex;align-items:center;gap:8px;color:var(--success-text)">
+            <span aria-hidden="true" class="uv-icon uv-icon--fill">check_circle</span>
+            <span>Долга нет</span>
+          </div>
+        </sc-if>
+      </div>
+      <div class="uv-list">
+        <sc-for list="{{ paymentRows }}" as="p" hint-placeholder-count="2">
+          <div class="uv-listrow">
+            <div class="uv-listrow__body">
+              <span class="uv-listrow__title" style="display:flex;align-items:center;gap:8px">
+                {{ p.date }}
+                <sc-if value="{{ p.isNew }}"><span style="background:var(--primary-soft);color:var(--primary);font-size:calc(13px * var(--uv-text-scale, 1));font-weight:600;padding:2px 8px;border-radius:var(--radius-full)">Новый</span></sc-if>
+              </span>
+              <span class="uv-listrow__sub">{{ p.amount }} · {{ p.method }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:764},&quot;app&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;act&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}">
+const DEMO = {
+  historyTab: 'readings',
+  debt: 1248.60,
+  lastPayment: null,
+  meters: [ { id: 'home', title: 'Дом' }, { id: 'garden', title: 'Полив' } ],
+  usage: [ { m: 'апр', v: 6 }, { m: 'май', v: 7 }, { m: 'июн', v: 9 }, { m: 'июл', v: 11 }, { m: 'авг', v: 10 }, { m: 'сен', v: null } ],
+  readingsHistory: [ { month: 'Август 2026', date: '24.08.2026', values: { home: 123, garden: 457 } }, { month: 'Июль 2026', date: '23.07.2026', values: { home: 113, garden: 440 } } ],
+  payments: [ { date: '24.08.2026', amount: 1105.20, method: 'СБП' }, { date: '22.07.2026', amount: 980.40, method: 'Карта' } ]
+};
+const NOOP = { go(){}, setHistoryTab(){}, money: n => { const p = Number(n).toFixed(2).split('.'); return p[0].replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0') + ',' + p[1] + '\u00A0₽'; }, reading: n => String(n).padStart(5, '0') };
+
+class Component extends DCLogic {
+  renderVals() {
+    const app = this.props.app ?? DEMO;
+    const act = this.props.act ?? NOOP;
+    const isReadings = (app.historyTab || 'readings') !== 'payments';
+
+    const usage = app.usage || [];
+    const nums = usage.map(u => u.v).filter(v => v !== null && v !== undefined);
+    const max = Math.max(...(nums.length ? nums : [1]), 1);
+    const usageBars = usage.slice(0, 6).map((u, i) => ({
+      cls: 'uv-bar' + (i === usage.length - 1 ? ' is-current' : ''),
+      month: u.m,
+      valText: (u.v === null || u.v === undefined) ? '—' : String(u.v),
+      height: (u.v === null || u.v === undefined) ? '6%' : (Math.max((u.v / max) * 100, 6) + '%')
+    }));
+
+    const meters = app.meters || DEMO.meters;
+    const single = meters.length === 1;
+    const readingRows = (app.readingsHistory || []).map(r => {
+      const values = r.values || {};
+      const parts = single
+        ? [act.reading(values[meters[0].id]) + ' м³']
+        : meters.map(m => m.title + ' ' + act.reading(values[m.id]));
+      return { month: r.month, line: r.date + ' · ' + parts.join(' · ') };
+    });
+
+    const lastKey = app.lastPayment ? (app.lastPayment.date + '|' + app.lastPayment.amount) : null;
+    const paymentRows = (app.payments || []).map(p => ({
+      date: p.date,
+      amount: act.money(p.amount),
+      method: p.method,
+      isNew: lastKey === (p.date + '|' + p.amount)
+    }));
+
+    return {
+      isReadings: isReadings,
+      isPayments: !isReadings,
+      readingsBg: isReadings ? 'var(--surface)' : 'transparent',
+      readingsColor: isReadings ? 'var(--primary)' : 'var(--text-secondary)',
+      readingsWeight: isReadings ? '600' : '400',
+      paymentsBg: !isReadings ? 'var(--surface)' : 'transparent',
+      paymentsColor: !isReadings ? 'var(--primary)' : 'var(--text-secondary)',
+      paymentsWeight: !isReadings ? '600' : '400',
+      tabReadings: () => act.setHistoryTab('readings'),
+      tabPayments: () => act.setHistoryTab('payments'),
+      usageBars: usageBars,
+      readingRows: readingRows,
+      debtMoney: act.money(app.debt),
+      hasDebt: app.debt > 0,
+      noDebt: app.debt <= 0,
+      pay: () => act.go('S10'),
+      paymentRows: paymentRows
+    };
+  }
+}
+
+</script>
+</body>
+</html>

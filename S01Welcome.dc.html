@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S01 · Приветствие</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:390px;height:844px;overflow-y:auto;background:var(--bg);display:flex;flex-direction:column;font-size:calc(17px * var(--uv-text-scale, 1))">
+  <div ref="{{ setLogoWrap }}" style="flex:none;display:flex;justify-content:center;padding:24px 20px 0">
+    <x-import component-from-global-scope="Ds_722904.Logo" hint-size="auto,32px"></x-import>
+  </div>
+  <div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:20px;padding:150px 32px 0;text-align:center">
+    <sc-if value="{{ isSlide1 }}">
+      <div class="uv-illustration">
+        <svg width="220" height="173" viewBox="0 0 280 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="140" cy="110" r="92" fill="var(--primary-soft)"/>
+          <rect x="94" y="46" width="92" height="150" rx="20" fill="var(--surface)" stroke="var(--brand-blue)" stroke-width="4"/>
+          <rect x="110" y="70" width="60" height="34" rx="8" fill="var(--primary)"/>
+          <circle cx="140" cy="128" r="4" fill="var(--brand-blue)"/>
+          <circle cx="140" cy="144" r="4" fill="var(--brand-blue)"/>
+          <circle cx="140" cy="160" r="4" fill="var(--brand-blue)"/>
+          <path d="M118 84c0 8 8 12 16 12s16-4 16-12" stroke="var(--on-primary)" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <circle cx="200" cy="150" r="26" fill="var(--brand-gradient-end)"/>
+          <path d="M200 132c8 10 14 17 14 24a14 14 0 1 1-28 0c0-7 6-14 14-24z" fill="var(--brand-red)"/>
+          <path d="M170 176l10 10 18-18" stroke="var(--primary)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isSlide2 }}">
+      <div class="uv-illustration">
+        <svg width="220" height="173" viewBox="0 0 280 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="140" cy="110" r="92" fill="var(--primary-soft)"/>
+          <path d="M120 46l40 14v46c0 34-18 54-40 66-22-12-40-32-40-66V60l40-14z" fill="var(--brand-blue)"/>
+          <path d="M120 60l26 9v34c0 24-13 38-26 46-13-8-26-22-26-46V69l26-9z" fill="var(--surface)"/>
+          <circle cx="120" cy="94" r="7" fill="var(--primary)"/>
+          <rect x="115" y="98" width="10" height="16" rx="4" fill="var(--primary)"/>
+          <path d="M108 96l8 8 14-14" stroke="var(--brand-gradient-end)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <rect x="176" y="86" width="60" height="104" rx="16" fill="var(--surface)" stroke="var(--brand-blue)" stroke-width="4"/>
+          <rect x="188" y="102" width="36" height="24" rx="6" fill="var(--primary-soft)"/>
+          <rect x="188" y="134" width="36" height="8" rx="4" fill="var(--divider)"/>
+          <rect x="188" y="150" width="24" height="8" rx="4" fill="var(--divider)"/>
+        </svg>
+      </div>
+    </sc-if>
+    <h1 style="margin:0;font-size:calc(24px * var(--uv-text-scale, 1));line-height:1.25;font-weight:700">{{ slideTitle }}</h1>
+    <p style="margin:0;font-size:calc(17px * var(--uv-text-scale, 1));line-height:1.44;color:var(--text-secondary)">{{ slideText }}</p>
+  </div>
+  <div style="flex:1"></div>
+  <div style="flex:none;display:flex;justify-content:center;gap:8px;padding-bottom:20px">
+    <span style="width:8px;height:8px;border-radius:var(--radius-full);background:{{ dot1 }}"></span>
+    <span style="width:8px;height:8px;border-radius:var(--radius-full);background:{{ dot2 }}"></span>
+  </div>
+  <div style="flex:none;display:flex;flex-direction:column;gap:12px;padding:0 20px 16px">
+    <sc-if value="{{ isSlide1 }}">
+      <x-import component-from-global-scope="Ds_722904.Button" on-click="{{ nextSlide }}" hint-size="100%,52px">Далее</x-import>
+    </sc-if>
+    <sc-if value="{{ isSlide2 }}">
+      <x-import component-from-global-scope="Ds_722904.Button" on-click="{{ start }}" hint-size="100%,52px">Начать</x-import>
+    </sc-if>
+  </div>
+  <p style="flex:none;margin:0;padding:0 20px 24px;text-align:center;font-size:calc(13px * var(--uv-text-scale, 1));line-height:1.44;color:var(--text-secondary)">Демонстрационная версия. Все данные вымышлены.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;app&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;act&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}">
+const NOOP = { go(){} };
+
+class Component extends DCLogic {
+  state = { slide: 1 };
+
+  fixLogo() {
+    const img = this.logoWrap && this.logoWrap.querySelector('.uv-logo__mark');
+    if (img && img.getAttribute('src') !== 'logos/uv-mark.png') img.src = 'logos/uv-mark.png';
+  }
+
+  componentDidMount() {
+    this.fixLogo();
+    this._logoTimer = setInterval(() => this.fixLogo(), 200);
+  }
+
+  componentWillUnmount() { clearInterval(this._logoTimer); }
+
+  renderVals() {
+    const act = this.props.act ?? NOOP;
+    const isSlide1 = this.state.slide === 1;
+    return {
+      setLogoWrap: node => { this.logoWrap = node; },
+      isSlide1: isSlide1,
+      isSlide2: !isSlide1,
+      slideTitle: isSlide1 ? 'Показания за минуту' : 'Осторожно, мошенники',
+      slideText: isSlide1
+        ? 'Передавайте показания счётчиков без звонков и очередей'
+        : 'Мы никогда не звоним с просьбой назвать код из SMS и не просим данные карты',
+      dot1: isSlide1 ? 'var(--primary)' : 'var(--divider)',
+      dot2: isSlide1 ? 'var(--divider)' : 'var(--primary)',
+      nextSlide: () => this.setState({ slide: 2 }),
+      start: () => act.go('S02')
+    };
+  }
+}
+
+</script>
+</body>
+</html>

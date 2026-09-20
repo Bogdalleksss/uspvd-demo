@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S04 · Лицевой счёт</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:390px;height:844px;overflow-y:auto;position:relative;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
+  <x-import component-from-global-scope="Ds_722904.TopBar" show-back="{{ yes }}" on-back="{{ back }}" hint-size="390px,48px"></x-import>
+  <div style="padding:8px 20px 0">
+    <h1 style="margin:0;font-size:calc(28px * var(--uv-text-scale, 1));line-height:1.21;font-weight:700;letter-spacing:-0.02em">Лицевой счёт</h1>
+    <p style="margin:8px 0 0;font-size:calc(17px * var(--uv-text-scale, 1));color:var(--text-secondary)">Укажите лицевой счёт, чтобы видеть показания и квитанции</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:24px;padding:28px 20px 32px">
+    <div class="uv-field">
+      <label for="s04-number" class="uv-field__label">Номер лицевого счёта</label>
+      <input id="s04-number" class="{{ numberClass }}" inputmode="numeric" placeholder="Например, 12-34567" value="{{ numberValue }}" onChange="{{ onNumberChange }}">
+      <sc-if value="{{ numberError }}"><span class="uv-field__error"><span aria-hidden="true" class="uv-icon uv-icon--fill">error</span>{{ numberError }}</span></sc-if>
+      <sc-if value="{{ showNumberHint }}"><span class="uv-field__hint">Указан в квитанции вверху</span></sc-if>
+    </div>
+    <div class="uv-field">
+      <label for="s04-owner" class="uv-field__label">Фамилия владельца</label>
+      <input id="s04-owner" class="{{ ownerClass }}" placeholder="Например, Петрова" value="{{ ownerValue }}" onChange="{{ onOwnerChange }}">
+      <sc-if value="{{ ownerError }}"><span class="uv-field__error"><span aria-hidden="true" class="uv-icon uv-icon--fill">error</span>{{ ownerError }}</span></sc-if>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:calc(15px * var(--uv-text-scale, 1));font-weight:600">Счётчиков на этом счёте</span>
+      <div style="display:flex;background:var(--primary-soft);border-radius:var(--radius-md);padding:4px;gap:4px;width:160px">
+        <button onClick="{{ setOne }}" style="flex:1;height:36px;border:none;border-radius:calc(var(--radius-md) - 2px);cursor:pointer;font:inherit;font-size:calc(15px * var(--uv-text-scale, 1));background:{{ oneBg }};color:{{ oneColor }};font-weight:{{ oneWeight }}">1</button>
+        <button onClick="{{ setTwo }}" style="flex:1;height:36px;border:none;border-radius:calc(var(--radius-md) - 2px);cursor:pointer;font:inherit;font-size:calc(15px * var(--uv-text-scale, 1));background:{{ twoBg }};color:{{ twoColor }};font-weight:{{ twoWeight }}">2</button>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:6px">
+        <span aria-hidden="true" class="uv-icon" style="font-size:16px;width:16px;height:16px;margin-top:1px;color:var(--text-secondary)">info</span>
+        <span style="font-size:calc(13px * var(--uv-text-scale, 1));color:var(--text-secondary)">Демо-настройка. В приложении счётчики подтянутся из базы водоканала автоматически</span>
+      </div>
+    </div>
+    <button onClick="{{ openSheet }}" class="uv-btn uv-btn--text-small" style="align-self:flex-start;margin-top:-4px">
+      <span aria-hidden="true" class="uv-icon">help</span>
+      Где найти номер?
+    </button>
+    <x-import component-from-global-scope="Ds_722904.Button" on-click="{{ link }}" hint-size="100%,52px">Подключить</x-import>
+  </div>
+  <sc-if value="{{ sheetOpen }}">
+    <div class="uv-scrim" style="position:absolute;inset:0;display:flex;align-items:flex-end">
+      <div class="uv-sheet" style="width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:16px">
+        <h2 style="margin:0;font-size:calc(20px * var(--uv-text-scale, 1));line-height:1.3;font-weight:600">Где найти номер?</h2>
+        <div style="border:1px solid var(--divider);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--bg)">
+          <div style="height:10px;width:55%;background:var(--divider);border-radius:4px"></div>
+          <div style="height:10px;width:35%;background:var(--divider);border-radius:4px"></div>
+          <div style="border:2px solid var(--primary);border-radius:8px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;background:var(--surface)">
+            <span style="height:10px;width:35%;background:var(--divider);border-radius:4px;display:block"></span>
+            <span style="font-size:calc(13px * var(--uv-text-scale, 1));font-weight:700;color:var(--primary)">Лицевой счёт 12-34567</span>
+          </div>
+          <div style="height:10px;width:70%;background:var(--divider);border-radius:4px"></div>
+          <div style="height:10px;width:45%;background:var(--divider);border-radius:4px"></div>
+        </div>
+        <p style="margin:0;font-size:calc(13px * var(--uv-text-scale, 1));color:var(--text-secondary)">Схема. На вашей квитанции расположение может отличаться.</p>
+        <x-import component-from-global-scope="Ds_722904.Button" on-click="{{ closeSheet }}" hint-size="100%,52px">Понятно</x-import>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;app&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;act&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}">
+const NOOP = { back(){}, linkAccount(){}, setMeterCount(){} };
+const NUMBER_RE = /^\d{2}-\d{5}$/;
+
+function formatNumber(digits) {
+  digits = digits.slice(0, 7);
+  return digits.length > 2 ? digits.slice(0, 2) + '-' + digits.slice(2) : digits;
+}
+
+class Component extends DCLogic {
+  state = { number: '', owner: '', numberError: '', ownerError: '', sheetOpen: false };
+
+  renderVals() {
+    const app = this.props.app ?? { meterCount: 2 };
+    const act = this.props.act ?? NOOP;
+    const number = this.state.number;
+    const isOne = app.meterCount === 1;
+    return {
+      yes: true,
+      back: () => act.back(),
+      setOne: () => act.setMeterCount(1),
+      setTwo: () => act.setMeterCount(2),
+      oneBg: isOne ? 'var(--surface)' : 'transparent',
+      oneColor: isOne ? 'var(--primary)' : 'var(--text-secondary)',
+      oneWeight: isOne ? '600' : '400',
+      twoBg: !isOne ? 'var(--surface)' : 'transparent',
+      twoColor: !isOne ? 'var(--primary)' : 'var(--text-secondary)',
+      twoWeight: !isOne ? '600' : '400',
+      numberValue: number,
+      ownerValue: this.state.owner,
+      numberClass: 'uv-field__input' + (this.state.numberError ? ' is-error' : ''),
+      ownerClass: 'uv-field__input' + (this.state.ownerError ? ' is-error' : ''),
+      numberError: this.state.numberError,
+      ownerError: this.state.ownerError,
+      showNumberHint: !this.state.numberError,
+      onNumberChange: e => this.setState({ number: formatNumber(e.target.value.replace(/\D/g, '')) }),
+      onOwnerChange: e => this.setState({ owner: e.target.value }),
+      openSheet: () => this.setState({ sheetOpen: true }),
+      closeSheet: () => this.setState({ sheetOpen: false }),
+      sheetOpen: this.state.sheetOpen,
+      link: () => {
+        const numOk = NUMBER_RE.test(number);
+        const ownerOk = this.state.owner.trim().length > 0;
+        if (numOk && ownerOk) { act.linkAccount(); }
+        else {
+          this.setState({
+            numberError: numOk ? '' : 'Номер состоит из 7 цифр, например 12-34567. Он указан в квитанции',
+            ownerError: ownerOk ? '' : 'Введите фамилию владельца счёта'
+          });
+        }
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>

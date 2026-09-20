@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>S12 · Уведомления</title>
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
+  <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
+  <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+</helmet>
+<div class="uv" style="width:390px;height:844px;overflow-y:auto;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
+  <x-import component-from-global-scope="Ds_722904.TopBar" show-back="{{ yes }}" on-back="{{ back }}" hint-size="390px,48px"></x-import>
+  <div style="padding:8px 20px 0">
+    <h1 style="margin:0;font-size:calc(28px * var(--uv-text-scale, 1));line-height:1.21;font-weight:700;letter-spacing:-0.02em">Уведомления</h1>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;padding:24px 20px 32px">
+    <sc-for list="{{ items }}" as="note" hint-placeholder-count="3">
+      <x-import component-from-global-scope="Ds_722904.NotificationCard" type="{{ note.type }}" title="{{ note.title }}" text="{{ note.text }}" date="{{ note.date }}" read="{{ note.read }}" hint-size="100%,auto"></x-import>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;app&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;act&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}">
+const DEMO = { notifications: [
+  { id: 'n1', kind: 'warning', tag: 'Отключение', title: 'Плановое отключение воды 23 сентября, 9:00–14:00', text: 'ул. Садовая, ул. Ленина. Причина — ремонт водопровода.', date: 'Сегодня, 08:15', read: false },
+  { id: 'n2', kind: 'info', tag: 'Напоминание', title: 'Передайте показания до 25 сентября', text: '', date: 'Вчера', read: false },
+  { id: 'n3', kind: 'success', tag: 'Выполнено', title: 'Работы завершены, водоснабжение восстановлено', text: '', date: '12 сентября', read: true }
+] };
+const NOOP = { back(){}, markAllRead(){} };
+const KIND_TO_TYPE = { warning: 'outage', info: 'reminder', success: 'done' };
+
+class Component extends DCLogic {
+  componentDidMount() {
+    const act = this.props.act;
+    if (act && act.markAllRead) act.markAllRead();
+  }
+
+  renderVals() {
+    const app = this.props.app ?? DEMO;
+    const act = this.props.act ?? NOOP;
+    const notes = app.notifications || [];
+    return {
+      yes: true,
+      back: () => act.back(),
+      items: notes.map(n => ({
+        type: KIND_TO_TYPE[n.kind] || 'reminder',
+        title: n.title,
+        text: n.text,
+        date: n.date,
+        read: !!n.read
+      }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>
