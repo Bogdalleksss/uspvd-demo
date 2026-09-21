@@ -11,9 +11,61 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F3F6F9">
-<script src="./support.js"></script>
+
+<!-- Предзагрузка: ресурсы качаются параллельно, не дожидаясь запуска рантайма -->
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="./support.js" as="script">
+<link rel="preload" href="https://unpkg.com/react@18.3.1/umd/react.production.min.js" as="script" crossorigin="anonymous" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z">
+<link rel="preload" href="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" as="script" crossorigin="anonymous" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/fonts.css" as="style">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/colors.css" as="style">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/typography.css" as="style">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/spacing.css" as="style">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/radius.css" as="style">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/shadow.css" as="style">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/size.css" as="style">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css" as="style">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css" as="style">
+<link rel="preload" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js" as="script">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0..1,0&display=block" as="style">
+<!-- Файлы шрифтов (кириллица и латиница Open Sans, Material Symbols). Адреса версионные: если Google обновит файл, preload просто не совпадёт, шрифт загрузится обычным путём -->
+<link rel="preload" href="https://fonts.gstatic.com/s/opensans/v44/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTSumu0SC55K5gw.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://fonts.gstatic.com/s/opensans/v44/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-mu0SC55I.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://fonts.gstatic.com/s/materialsymbolsoutlined/v373/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJU22ZZLsYEpzC_1qmr5Y0J1Llf.woff2" as="font" type="font/woff2" crossorigin>
+
+<!-- Заставка: видна сразу, пока рантайм, экраны и шрифты не загружены -->
+<style id="boot-css">
+  html, body { margin: 0; background: #F3F6F9; }
+  #boot { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; background: #F3F6F9; font-family: 'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  #boot .boot-logo { display: inline-flex; align-items: center; gap: 10px; }
+  #boot .boot-logo img { height: 32px; flex: none; }
+  #boot .boot-text { display: flex; flex-direction: column; justify-content: center; }
+  #boot .boot-name { font-size: 17px; line-height: 22px; font-weight: 700; color: #0D6393; }
+  #boot .boot-sub { font-size: 13px; line-height: 16px; font-weight: 400; color: #4B5663; }
+  @media (min-width: 560px) {
+    html { background: #e4eaf0; }
+    #boot { background: #e4eaf0; }
+    #boot .boot-col { width: 480px; height: min(100dvh, 900px); display: flex; align-items: center; justify-content: center; background: #F3F6F9; box-shadow: 0 8px 32px rgba(0, 0, 0, .14); }
+  }
+</style>
 </head>
 <body>
+<div id="boot" role="status" aria-label="Загрузка">
+  <div class="boot-col">
+    <div class="boot-logo">
+      <img src="data:image/png;base64,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" alt="" height="32">
+      <div class="boot-text">
+        <span class="boot-name">Успенский Водоканал</span>
+        <span class="boot-sub">муниципальное унитарное предприятие</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Рантайм подключаем после заставки: иначе синхронный скрипт в <head> задерживает первую отрисовку. Скачивание при этом стартует раньше — через preload -->
+<script src="./support.js"></script>
 <x-dc>
 <helmet>
   <title>Успенский Водоканал — прототип</title>
@@ -95,26 +147,48 @@
   </style>
 </helmet>
 <div class="uv app-shell">
-  <div class="app-screen" style="--uv-text-scale:{{ textScale }}">
-    <sc-if value="{{ isS01 }}" hint-placeholder-val="{{ true }}"><dc-import name="S01Welcome" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS02 }}"><dc-import name="S02Phone" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS03 }}"><dc-import name="S03Code" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS04 }}"><dc-import name="S04Account" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS05 }}"><dc-import name="S05Home" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
-    <sc-if value="{{ isS06 }}"><dc-import name="S06Readings" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
-    <sc-if value="{{ isS07 }}"><dc-import name="S07Confirm" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS08 }}"><dc-import name="S08Done" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS09 }}"><dc-import name="S09History" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
-    <sc-if value="{{ isS10 }}"><dc-import name="S10Pay" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS11 }}"><dc-import name="S11Paid" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS12 }}"><dc-import name="S12Notifications" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS13 }}"><dc-import name="S13More" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
-    <sc-if value="{{ isS15 }}"><dc-import name="S15Fraud" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-    <sc-if value="{{ isS16 }}"><dc-import name="S16Privacy" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
-  </div>
-  <sc-if value="{{ showTabBar }}">
-    <div class="app-tabbar">
-      <x-import component-from-global-scope="Ds_722904.TabBar" active="{{ tabKey }}" on-change="{{ onTabChange }}" hint-size="390px,64px"></x-import>
+  <sc-if value="{{ ready }}">
+    <div class="app-screen" style="--uv-text-scale:{{ textScale }}">
+      <sc-if value="{{ isS01 }}" hint-placeholder-val="{{ true }}"><dc-import name="S01Welcome" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS02 }}"><dc-import name="S02Phone" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS03 }}"><dc-import name="S03Code" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS04 }}"><dc-import name="S04Account" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS05 }}"><dc-import name="S05Home" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
+      <sc-if value="{{ isS06 }}"><dc-import name="S06Readings" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
+      <sc-if value="{{ isS07 }}"><dc-import name="S07Confirm" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS08 }}"><dc-import name="S08Done" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS09 }}"><dc-import name="S09History" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
+      <sc-if value="{{ isS10 }}"><dc-import name="S10Pay" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS11 }}"><dc-import name="S11Paid" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS12 }}"><dc-import name="S12Notifications" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS13 }}"><dc-import name="S13More" app="{{ app }}" act="{{ act }}" hint-size="390px,764px"></dc-import></sc-if>
+      <sc-if value="{{ isS15 }}"><dc-import name="S15Fraud" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+      <sc-if value="{{ isS16 }}"><dc-import name="S16Privacy" app="{{ app }}" act="{{ act }}" hint-size="390px,844px"></dc-import></sc-if>
+    </div>
+    <sc-if value="{{ showTabBar }}">
+      <div class="app-tabbar">
+        <x-import component-from-global-scope="Ds_722904.TabBar" active="{{ tabKey }}" on-change="{{ onTabChange }}" hint-size="390px,64px"></x-import>
+      </div>
+    </sc-if>
+  </sc-if>
+  <!-- Предзагрузка экранов: один раз при старте монтируем все экраны в скрытый контейнер с демо-данными и пустыми действиями -->
+  <sc-if value="{{ !ready }}">
+    <div id="preload" aria-hidden="true" style="display:none">
+      <div data-preload="S01Welcome"><dc-import name="S01Welcome" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S02Phone"><dc-import name="S02Phone" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S03Code"><dc-import name="S03Code" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S04Account"><dc-import name="S04Account" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S05Home"><dc-import name="S05Home" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,764px"></dc-import></div>
+      <div data-preload="S06Readings"><dc-import name="S06Readings" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,764px"></dc-import></div>
+      <div data-preload="S07Confirm"><dc-import name="S07Confirm" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S08Done"><dc-import name="S08Done" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S09History"><dc-import name="S09History" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,764px"></dc-import></div>
+      <div data-preload="S10Pay"><dc-import name="S10Pay" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S11Paid"><dc-import name="S11Paid" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S12Notifications"><dc-import name="S12Notifications" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S13More"><dc-import name="S13More" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,764px"></dc-import></div>
+      <div data-preload="S15Fraud"><dc-import name="S15Fraud" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
+      <div data-preload="S16Privacy"><dc-import name="S16Privacy" app="{{ preloadApp }}" act="{{ preloadAct }}" hint-size="390px,844px"></dc-import></div>
     </div>
   </sc-if>
 </div>
@@ -156,6 +230,8 @@ function demo(meterCount) {
 }
 
 const NBSP = '\u00A0';
+const PRELOAD_SCREENS = ['S01Welcome','S02Phone','S03Code','S04Account','S05Home','S06Readings','S07Confirm','S08Done','S09History','S10Pay','S11Paid','S12Notifications','S13More','S15Fraud','S16Privacy'];
+const PRELOAD_MAX_WAIT = 45000; // страховка: если что-то не загрузилось, показываем приложение всё равно
 const TAB_SCREENS = { home: 'S05', readings: 'S06', payments: 'S09', more: 'S13' };
 const SCREEN_TABS = { S05: 'home', S06: 'readings', S09: 'payments', S13: 'more' };
 
@@ -167,7 +243,69 @@ class Component extends DCLogic {
     s.screen = start;
     if (start === 'S05') s.phone = '9000000000';
     s.largeText = !!props.startLargeText;
-    this.state = { app: s };
+    this.state = { app: s, ready: false };
+    // Данные и действия для скрытых экранов предзагрузки: демо-данные и пустые функции (имена те же, что у act)
+    const pre = demo(2);
+    pre.phone = '9000000000';
+    this.preloadApp = this.derive(pre);
+    const real = this.makeAct();
+    this.preloadAct = { __preload: true };
+    Object.keys(real).forEach(k => { this.preloadAct[k] = (k === 'money' || k === 'reading') ? real[k] : () => {}; });
+  }
+
+  componentDidMount() { this.startPreload(); }
+
+  componentWillUnmount() { this.preloadCancelled = true; }
+
+  // Ждём: стили, шрифты и все экраны собраны -> открываем стартовый экран и убираем заставку
+  startPreload() {
+    const t0 = Date.now();
+    const sheetsLoaded = () => [...document.querySelectorAll('link[rel="stylesheet"]')].every(l => l.sheet);
+    const screensBuilt = () => !!window.Ds_722904 && PRELOAD_SCREENS.every(n => {
+      const box = document.querySelector('#preload [data-preload="' + n + '"]');
+      return !!box && !!box.querySelector('.uv') && !box.querySelector('.sc-placeholder');
+    });
+    const loadFonts = () => {
+      const f = document.fonts;
+      if (!f || !f.load) return Promise.resolve();
+      return Promise.all([
+        f.load("400 16px 'Open Sans'", 'Aa Аа'), f.load("600 16px 'Open Sans'", 'Aa Аа'), f.load("700 16px 'Open Sans'", 'Aa Аа'),
+        f.load("300 24px 'Material Symbols Outlined'", 'home')
+      ]).then(() => f.ready);
+    };
+    let fontsStarted = false, fontsDone = false;
+    const tick = () => {
+      if (this.preloadCancelled) return;
+      const timedOut = Date.now() - t0 > PRELOAD_MAX_WAIT;
+      // @font-face появляется только после загрузки CSS шрифтов, а скрытые (display:none) экраны сами шрифты не запрашивают — просим явно
+      if (!fontsStarted && sheetsLoaded()) { fontsStarted = true; loadFonts().then(() => { fontsDone = true; }, () => { fontsDone = true; }); }
+      if ((fontsDone && sheetsLoaded() && screensBuilt()) || timedOut) {
+        if (timedOut) console.warn('[preload] не всё загрузилось за ' + PRELOAD_MAX_WAIT + ' мс, открываем приложение как есть');
+        this.finishPreload();
+        return;
+      }
+      setTimeout(tick, 50);
+    };
+    tick();
+  }
+
+  finishPreload() {
+    this.setState({ ready: true }, () => {
+      // убираем заставку после первого кадра с готовым экраном, чтобы не было пустого кадра между ними
+      requestAnimationFrame(() => requestAnimationFrame(() => { const b = document.getElementById('boot'); if (b) b.remove(); }));
+    });
+  }
+
+  // Общие производные значения (unreadCount, consumption и т.д.) — для оболочки и для предзагрузки
+  derive(a) {
+    const consumption = {};
+    a.meters.forEach(m => { consumption[m.id] = (m.value === null || m.value === undefined) ? null : m.value - m.prev; });
+    const unreadCount = a.notifications.filter(n => !n.read).length;
+    const canSubmit = a.meters.every(m => m.value !== null && m.value !== undefined && m.value >= m.prev);
+    const allEntered = a.meters.every(m => m.value !== null && m.value !== undefined);
+    const totalConsumption = allEntered ? a.meters.reduce((sum, m) => sum + (m.value - m.prev), 0) : null;
+    const single = a.meters.length === 1;
+    return Object.assign({}, a, { unreadCount: unreadCount, consumption: consumption, totalConsumption: totalConsumption, canSubmit: canSubmit, single: single });
   }
 
   up(patch) { this.setState(st => ({ app: Object.assign({}, st.app, typeof patch === 'function' ? patch(st.app) : patch) })); }
@@ -237,18 +375,14 @@ class Component extends DCLogic {
 
   renderVals() {
     const a = this.state.app;
-    const consumption = {};
-    a.meters.forEach(m => { consumption[m.id] = (m.value === null || m.value === undefined) ? null : m.value - m.prev; });
-    const unreadCount = a.notifications.filter(n => !n.read).length;
-    const canSubmit = a.meters.every(m => m.value !== null && m.value !== undefined && m.value >= m.prev);
-    const allEntered = a.meters.every(m => m.value !== null && m.value !== undefined);
-    const totalConsumption = allEntered ? a.meters.reduce((sum, m) => sum + (m.value - m.prev), 0) : null;
-    const single = a.meters.length === 1;
-    const app = Object.assign({}, a, { unreadCount: unreadCount, consumption: consumption, totalConsumption: totalConsumption, canSubmit: canSubmit, single: single });
+    const app = this.derive(a);
     const act = this.makeAct();
     const vals = {
       app: app,
       act: act,
+      ready: this.state.ready,
+      preloadApp: this.preloadApp,
+      preloadAct: this.preloadAct,
       textScale: a.largeText ? 1.25 : 1,
       showTabBar: !!SCREEN_TABS[a.screen],
       tabKey: SCREEN_TABS[a.screen] || 'home',

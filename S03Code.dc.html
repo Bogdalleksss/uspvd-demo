@@ -63,6 +63,7 @@ class Component extends DCLogic {
   nodes = [];
 
   componentDidMount() {
+    if (this.props.act && this.props.act.__preload) return; // скрытая предзагрузка: таймер не запускаем
     this.timer = setInterval(() => {
       this.setState(s => s.seconds > 0 ? { seconds: s.seconds - 1 } : {});
     }, 1000);
