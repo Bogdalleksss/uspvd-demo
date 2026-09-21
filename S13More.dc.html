@@ -19,8 +19,25 @@
   <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
   <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
   <script src="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/_ds_bundle.js"></script>
+  <style>
+    /* Диалог подтверждения: одно затемнение на всё окно, поверх нижней панели */
+    .uv-modal { position: fixed; inset: 0; z-index: 1000; box-sizing: border-box; display: flex; align-items: center; justify-content: center; padding: 0; background: var(--scrim); overscroll-behavior: contain; }
+    .uv-modal__card { box-sizing: border-box; width: calc(100% - 40px); max-width: 340px; max-height: calc(100% - 40px); overflow-y: auto; margin: 0; padding: 24px; background: var(--surface); border: none; border-radius: var(--radius-lg); box-shadow: var(--shadow-dialog); font-family: var(--font-sans); }
+    .uv-modal .uv-modal__title, .uv-modal .uv-modal__text { hyphens: manual; overflow-wrap: break-word; }
+    .uv-modal__title { margin: 0; font-size: calc(20px * var(--uv-text-scale, 1)); line-height: 1.3; font-weight: 600; color: var(--text-primary); }
+    .uv-modal__text { margin: 8px 0 0; font-size: calc(15px * var(--uv-text-scale, 1)); line-height: 1.4667; color: var(--text-secondary); }
+    .uv-modal__actions { display: flex; flex-direction: row; gap: 12px; margin-top: 24px; }
+    .uv-modal__actions .uv-btn { flex: 1 1 0; min-width: 0; width: auto; height: 48px; min-height: 48px; padding: 0 12px; font-size: calc(17px * var(--uv-text-scale, 1)); }
+    .uv-modal__danger { background: var(--error); color: #fff; }
+    .uv-modal__danger:active { filter: brightness(0.9); }
+    /* Карточка уже 340px (экран уже 380px): кнопки столбцом, опасное действие сверху */
+    @media (max-width: 379px) {
+      .uv-modal__actions { flex-direction: column-reverse; }
+      .uv-modal__actions .uv-btn { flex: none; width: 100%; }
+    }
+  </style>
 </helmet>
-<div class="uv" style="width:100%;height:100%;overflow-y:auto;position:relative;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
+<div class="uv" style="width:100%;height:100%;overflow-y:{{ scrollMode }};position:relative;background:var(--bg);font-size:calc(17px * var(--uv-text-scale, 1))">
   <div style="display:flex;flex-direction:column;gap:24px;padding:24px 20px 32px">
     <h1 style="margin:0;font-size:calc(28px * var(--uv-text-scale, 1));line-height:1.21;font-weight:700;letter-spacing:-0.02em">Ещё</h1>
 
@@ -60,13 +77,27 @@
   </div>
 
   <sc-if value="{{ showLogoutDialog }}">
-    <div style="position:absolute;inset:0" class="uv-scrim">
-      <x-import component-from-global-scope="Ds_722904.Dialog" title="Выйти из приложения?" text="Чтобы войти снова, понадобится код из SMS" confirm-label="Выйти" cancel-label="Отмена" on-confirm="{{ doLogout }}" on-cancel="{{ closeDialog }}" hint-size="100%,auto"></x-import>
+    <div class="uv-modal" onClick="{{ onScrimClick }}">
+      <div class="uv-modal__card" role="alertdialog" aria-modal="true" aria-labelledby="s13-dialog-title" aria-describedby="s13-dialog-text">
+        <h3 id="s13-dialog-title" class="uv-modal__title">Выйти из приложения?</h3>
+        <p id="s13-dialog-text" class="uv-modal__text">Чтобы войти снова, понадобится код из SMS</p>
+        <div class="uv-modal__actions">
+          <button class="uv-btn uv-btn--secondary uv-modal__cancel" onClick="{{ closeDialog }}">Отмена</button>
+          <button class="uv-btn uv-modal__danger" onClick="{{ doLogout }}">Выйти</button>
+        </div>
+      </div>
     </div>
   </sc-if>
   <sc-if value="{{ showDeleteDialog }}">
-    <div style="position:absolute;inset:0" class="uv-scrim">
-      <x-import component-from-global-scope="Ds_722904.Dialog" title="Удалить аккаунт?" text="Данные входа удалятся. Лицевой счёт и история начислений в водоканале останутся" confirm-label="Удалить" cancel-label="Отмена" on-confirm="{{ doDelete }}" on-cancel="{{ closeDialog }}" hint-size="100%,auto"></x-import>
+    <div class="uv-modal" onClick="{{ onScrimClick }}">
+      <div class="uv-modal__card" role="alertdialog" aria-modal="true" aria-labelledby="s13-dialog-title" aria-describedby="s13-dialog-text">
+        <h3 id="s13-dialog-title" class="uv-modal__title">Удалить аккаунт?</h3>
+        <p id="s13-dialog-text" class="uv-modal__text">Данные входа удалятся. Лицевой счёт и история начислений в водоканале останутся</p>
+        <div class="uv-modal__actions">
+          <button class="uv-btn uv-btn--secondary uv-modal__cancel" onClick="{{ closeDialog }}">Отмена</button>
+          <button class="uv-btn uv-modal__danger" onClick="{{ doDelete }}">Удалить</button>
+        </div>
+      </div>
     </div>
   </sc-if>
 </div>
@@ -77,6 +108,31 @@ const NOOP = { go(){}, toggleLargeText(){}, logout(){}, deleteAccount(){} };
 
 class Component extends DCLogic {
   state = { showAddInfo: false, dialog: null };
+
+  componentDidMount() {
+    // Esc закрывает диалог; Tab не уходит за пределы диалога
+    this.onKey = e => {
+      if (!this.state.dialog) return;
+      if (e.key === 'Escape') { e.preventDefault(); this.setState({ dialog: null }); return; }
+      if (e.key !== 'Tab') return;
+      const nodes = [...document.querySelectorAll('.uv-modal__card button')];
+      if (!nodes.length) return;
+      const first = nodes[0], last = nodes[nodes.length - 1];
+      if (!nodes.includes(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    document.addEventListener('keydown', this.onKey);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKey);
+  }
+
+  focusCancel() {
+    const el = document.querySelector('.uv-modal__cancel');
+    if (el) el.focus();
+  }
 
   renderVals() {
     const app = this.props.app ?? DEMO;
@@ -93,9 +149,11 @@ class Component extends DCLogic {
       hotlineHref: 'tel:' + (app.hotlineTel || DEMO.hotlineTel),
       fraud: () => act.go('S15'),
       privacy: () => act.go('S16'),
-      openLogout: () => this.setState({ dialog: 'logout' }),
-      openDelete: () => this.setState({ dialog: 'delete' }),
+      openLogout: () => this.setState({ dialog: 'logout' }, () => this.focusCancel()),
+      openDelete: () => this.setState({ dialog: 'delete' }, () => this.focusCancel()),
       closeDialog: () => this.setState({ dialog: null }),
+      onScrimClick: e => { if (e.target === e.currentTarget) this.setState({ dialog: null }); },
+      scrollMode: this.state.dialog ? 'hidden' : 'auto',
       showLogoutDialog: this.state.dialog === 'logout',
       showDeleteDialog: this.state.dialog === 'delete',
       doLogout: () => act.logout(),

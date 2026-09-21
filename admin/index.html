@@ -22,6 +22,25 @@
   <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/tokens/base.css">
   <link rel="stylesheet" href="_ds/ds-7229045f-139b-49b0-b752-7428fd33e88a/styles.css">
   <style>
+    /* ===== Фокус: вместо стандартного outline браузера — рамка поля и кольцо ===== */
+    * , *::before, *::after { -webkit-tap-highlight-color: transparent; }
+    :focus, :focus-visible { outline: none !important; }
+    button:focus:not(:focus-visible), a:focus:not(:focus-visible),
+    [role="button"]:focus:not(:focus-visible), [tabindex]:focus:not(:focus-visible) { outline: none; box-shadow: none; }
+    /* Клавиатура (Tab): аккуратное кольцо у кнопок, ссылок и строк списка */
+    button:focus-visible, a:focus-visible, summary:focus-visible, .uv-listrow:focus-visible,
+    [role="button"]:focus-visible, [role="tab"]:focus-visible, [role="switch"]:focus-visible,
+    [role="checkbox"]:focus-visible, [tabindex]:focus-visible { outline: none !important; box-shadow: 0 0 0 3px var(--primary-soft); }
+    /* Поля ввода: рамка 2px primary (без сдвига вёрстки) + кольцо 4px primary-soft.
+       Поля DS с классом is-focus рисуют то же самое сами. */
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):focus:not(.is-focus),
+    textarea:focus:not(.is-focus) { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary), 0 0 0 4px var(--primary-soft); }
+    /* у select граница задана инлайн-стилем, поэтому !important */
+    select:focus { border-color: var(--primary) !important; box-shadow: inset 0 0 0 1px var(--primary), 0 0 0 4px var(--primary-soft) !important; }
+    /* Ячейка кода: рамку рисует сама ячейка, а не вложенный input */
+    .uv-otp__cell input:focus { box-shadow: none !important; }
+    .uv-otp__cell:focus-within:not(.is-focus) { border: 2px solid var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
+
     html, body { margin: 0; background: var(--bg); }
     body { -webkit-text-size-adjust: 100%; }
     .adm-root { width: 100%; min-height: 100vh; background: var(--bg); font-size: 15px; overflow-x: hidden; }
